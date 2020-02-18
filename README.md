@@ -1,4 +1,4 @@
-# devCenterNodeJs
+# devCenterFullStack
 
 Full stack application for a DEV Bootcamp Project.
 
