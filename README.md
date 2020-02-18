@@ -1,10 +1,22 @@
 # devCenterNodeJs
 
-RestFUL API for a DEV Center Project.
+Full stack application for a DEV Bootcamp Project.
 
-##Usage
+##Stack
 
+```
+React
+CSS
+Express(Node)
+MongoDB
+Heroku
+```
+
+## Usage
+
+```
 Rename "config/config.env.env" to "config/config.env" and update the values.
+```
 
 ## Install Dependencies
 
@@ -16,15 +28,5 @@ npm install
 
 ```
 # Run in dev mode
-npm run dev
-
-# Run in prod mode
-npm start
-```
-
-## Documentation
-
-```
-http:localhost:5000/
-
+npm run both
 ```
