@@ -26,7 +26,9 @@ router.get(
           )
         );
 
-      const reviews = await Review.find({ bootcamp: req.params.bootcampId });
+      const reviews = await Review.find({
+        bootcamp: req.params.bootcampId
+      }).populate("user", "name");
 
       return res.status(200).json({
         success: true,
@@ -110,10 +112,7 @@ router.put(
       );
 
     //Make sure review belongs to logged in user
-    if (
-      review.user.id.toString() !== req.user.id &&
-      req.user.role !== "admin"
-    ) {
+    if (review.user.toString() !== req.user.id && req.user.role !== "admin") {
       return next(
         new ErrorResponse(`User not authorized to perform this task`, 401)
       );
@@ -122,7 +121,7 @@ router.put(
     review = await Review.findByIdAndUpdate(req.params.id, req.body, {
       new: true,
       runValidators: true
-    });
+    }).populate("bootcamp", "name");
 
     res.status(200).json({
       success: true,
@@ -147,10 +146,7 @@ router.delete(
       );
 
     //Make sure review belongs to logged in user
-    if (
-      review.user.id.toString() !== req.user.id &&
-      req.user.role !== "admin"
-    ) {
+    if (review.user.toString() !== req.user.id && req.user.role !== "admin") {
       return next(
         new ErrorResponse(`User not authorized to perform this task`, 401)
       );

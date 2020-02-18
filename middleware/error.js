@@ -12,7 +12,7 @@ const errorHandler = (err, req, res, next) => {
 
   //Duplicate field value error
   if (error.code === 11000) {
-    const message = "Duplicate field entered";
+    const message = "User Already Exist";
     error = new ErrorResponse(message, 400);
   }
 

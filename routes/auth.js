@@ -206,7 +206,7 @@ router.put(
 
     // Check current password
     if (!(await user.comparePassword(req.body.currentPassword))) {
-      return next(new ErrorResponse("Password is incorrect", 401));
+      return next(new ErrorResponse("Password is incorrect", 400));
     }
 
     user.password = req.body.newPassword;

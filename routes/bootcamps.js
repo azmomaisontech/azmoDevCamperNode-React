@@ -49,8 +49,6 @@ router.post(
   protect,
   authorize("publisher", "admin"),
   asyncHandler(async (req, res, next) => {
-    console.log(req.user);
-
     //Add user to req.body
     req.body.user = req.user.id;
 

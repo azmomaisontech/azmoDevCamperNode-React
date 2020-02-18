@@ -51,7 +51,7 @@ ReviewSchema.statics.getAverageRating = async function(bootcampId) {
 
   try {
     await this.model("Bootcamp").findByIdAndUpdate(bootcampId, {
-      averageRating: Math.ceil(obj[0].averageRating / 10) * 10
+      averageRating: Math.ceil(obj[0].averageRating)
     });
   } catch (err) {
     console.error(err);
