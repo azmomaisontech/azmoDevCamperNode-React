@@ -65,7 +65,7 @@ app.use(hpp());
 app.use(cors());
 
 //Creating a static folder
-app.use(express.static(path.join(__dirname, "public")));
+app.use("/uploads", express.static("uploads"));
 
 // Mount routers
 app.use("/api/v1/bootcamps", bootcamps);
