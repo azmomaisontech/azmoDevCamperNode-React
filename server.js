@@ -52,7 +52,7 @@ app.use(xss());
 //Limit the number of request per time
 const limiter = rateLimit({
   windowMs: 10 * 60 * 1000, // 10 minutes
-  max: 1000 // limit each IP to 1000 requests per windowMs
+  max: 100 // limit each IP to 1000 requests per windowMs
 });
 
 //  apply to all requests
@@ -73,6 +73,16 @@ app.use("/api/v1/courses", courses);
 app.use("/api/v1/auth", auth);
 app.use("/api/v1/users", users);
 app.use("/api/v1/reviews", reviews);
+
+// Serve static assets in production
+if (process.env.NODE_ENV === "production") {
+  //Set statuc folder
+  app.use(express.static("client/build"));
+
+  app.get("*", (req, res) =>
+    res.sendFile(path.resolve(__dirname, "client", "build", "index.html"))
+  );
+}
 
 //Load errorHandler
 app.use(errorHandler);

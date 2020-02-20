@@ -7,7 +7,8 @@
     "start": "NODE_ENV=production node server",
     "dev": "nodemon server",
     "client": "npm start --prefix client",
-    "both": "concurrently 'npm run dev' 'npm run client' "
+    "both": "concurrently 'npm run dev' 'npm run client' ",
+    "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false npm install --prefix client && npm run build --prefix client"
   },
   "author": "Azmo Tech",
   "license": "MIT",
