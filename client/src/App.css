@@ -700,7 +700,7 @@ i.fa-times {
 
 /* Review */
 
-#read-reviews .review-grid {
+#read-reviews .container .review-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   grid-gap: 1.5rem;
@@ -1150,6 +1150,14 @@ i.fa-times {
   #read-reviews .review-content .btn-sm {
     width: 40%;
   }
+
+  #read-reviews .container .review-grid {
+    grid-template-columns: 1fr;
+  }
+
+  #read-reviews .review-content {
+    grid-column: 1;
+  }
 }
 
 /* Hamburger Menu for small screens */
@@ -1198,6 +1206,10 @@ i.fa-times {
   }
 
   #home-main input::placeholder {
+    font-size: 0.7rem;
+  }
+
+  #login-main input::placeholder {
     font-size: 0.7rem;
   }
 
@@ -1292,8 +1304,16 @@ i.fa-times {
     margin-top: 1rem;
   }
 
+  #add-bootcamp input::placeholder {
+    font-size: 0.7rem;
+  }
+
   #manage-main label {
     font-size: 1.1rem;
+  }
+
+  #manage-main input::placeholder {
+    font-size: 0.7rem;
   }
 
   #manage-main .submit-buttons {
@@ -1329,6 +1349,10 @@ i.fa-times {
     width: 50%;
   }
 
+  #add-review input::placeholder {
+    font-size: 0.7rem;
+  }
+
   #read-reviews .review-image .rating span {
     font-size: 1rem;
     padding: 0.7rem;
@@ -1352,6 +1376,10 @@ i.fa-times {
   #manage-courses table button {
     width: 100%;
     padding: 0.2rem;
+  }
+
+  #add-courses input::placeholder {
+    font-size: 0.7rem;
   }
 }
 
