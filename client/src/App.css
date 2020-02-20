@@ -1182,7 +1182,7 @@ i.fa-times {
   }
 
   #home-main {
-    height: 93vh;
+    height: 94vh;
   }
 
   #home-main form {
@@ -1197,8 +1197,8 @@ i.fa-times {
     font-size: 0.9rem;
   }
 
-  #login-main input::placeholder {
-    font-size: 0.9rem;
+  #home-main input::placeholder {
+    font-size: 0.7rem;
   }
 
   #bootcamp-main {
@@ -1360,6 +1360,10 @@ i.fa-times {
   #home-main {
     height: 95vh;
   }
+
+  #home-main input::placeholder {
+    font-size: 0.8rem;
+  }
 }
 
 @media (max-height: 420px) {
@@ -1377,6 +1381,10 @@ i.fa-times {
 
   .s-heading {
     font-size: 1rem;
+  }
+
+  #home-main input::placeholder {
+    font-size: 0.8rem;
   }
 
   #manage-review a,
