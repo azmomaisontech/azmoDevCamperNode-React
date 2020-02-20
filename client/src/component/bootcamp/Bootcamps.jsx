@@ -84,9 +84,16 @@ const Bootcamps = props => {
                   className="btn
                 btn-primary
                 btn-block"
-                  value="Find Bootcamps"
+                  value="Filter Bootcamps"
                 />
               </form>
+              <Link
+                className="btn btn-block btn-green standalone"
+                onClick={() => getBootcamps()}
+                to="/bootcamps"
+              >
+                Browse All Bootcamps
+              </Link>
             </div>
             <div className="bootcamps">
               {bootcamps.length === 0 && !loading ? (

@@ -1,4 +1,5 @@
 import React, { useContext, useState } from "react";
+import { Link } from "react-router-dom";
 import BootcampContext from "../../context/bootcamp/bootcampContext";
 
 const Home = props => {
@@ -9,7 +10,7 @@ const Home = props => {
 
   const bootcampContext = useContext(BootcampContext);
 
-  const { filterBootcamp } = bootcampContext;
+  const { filterBootcamp, getBootcamps } = bootcampContext;
 
   const handleChange = e => {
     setDistance({ ...distance, [e.target.name]: e.target.value });
@@ -49,9 +50,16 @@ const Home = props => {
           <input
             className="btn btn-block btn-primary"
             type="submit"
-            value="Find Bootcamps"
+            value="Filter Bootcamps"
           />
         </form>
+        <Link
+          className="btn btn-block standalone"
+          onClick={() => getBootcamps()}
+          to="/bootcamps"
+        >
+          Browse All Bootcamps
+        </Link>
       </div>
     </main>
   );

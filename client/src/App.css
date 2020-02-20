@@ -267,7 +267,7 @@ i.fa-times {
 }
 
 #mobilenav ul li ul li a {
-  color: #333;
+  color: #1e1e1e;
   font-size: 1rem;
 }
 
@@ -432,6 +432,10 @@ i.fa-times {
   grid-column: 1 / span 2;
 }
 
+#home-main a.standalone:hover {
+  text-decoration: underline;
+}
+
 /* Login, Register, Reset Password */
 
 #login-main form {
@@ -592,6 +596,14 @@ i.fa-times {
 
 #bootcamp-main a:hover {
   text-decoration: underline;
+}
+
+#bootcamp-main a.standalone {
+  margin: 3rem 0;
+}
+
+#bootcamp-main a.standalone:hover {
+  text-decoration: none;
 }
 
 .pagination {
@@ -1122,7 +1134,7 @@ i.fa-times {
 
 /* Media query for smaller devices */
 /* Ipad Pro */
-@media (max-width: 1024px) {
+@media (max-width: 1025px) {
   #home-main {
     height: 100vh;
     color: #fff;
