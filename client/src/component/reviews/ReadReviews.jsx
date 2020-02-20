@@ -32,10 +32,10 @@ const ReadReviews = props => {
   const { _id, name, averageRating } = bootcamp;
 
   return (
-    <main id="bootcamp-display">
+    <main id="read-reviews">
       <div className="container">
-        <div className="bootcamp-grid">
-          <div className="bootcamp-content">
+        <div className="review-grid">
+          <div className="review-content">
             <Link className="btn btn-gray btn-sm " to={`/bootcamps/${_id}`}>
               <i className="fas fa-chevron-left"></i>
               Bootcamp Info
@@ -47,7 +47,7 @@ const ReadReviews = props => {
                 <Review review={review} key={review._id} />
               ))}
           </div>
-          <div className="bootcamp-image">
+          <div className="review-image">
             <div className="rating">
               <span className="badge badge-round badge-green">
                 {averageRating}

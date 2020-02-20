@@ -98,40 +98,40 @@ const Bootcamps = props => {
               ) : (
                 <Spinner />
               )}
+              {pagination &&
+                Object.keys(pagination).length !== 0 &&
+                pagination.constructor === Object && (
+                  <div>
+                    <ul className="pagination">
+                      <ul>
+                        {pagination.prev && (
+                          <li>
+                            <Link
+                              className="btn btn-block btn-primary"
+                              to={`/bootcamps?page=${pagination.prev.page}`}
+                            >
+                              Previous
+                            </Link>
+                          </li>
+                        )}
+                        {pagination.next && (
+                          <li>
+                            <Link
+                              className="btn btn-block btn-primary"
+                              to={`/bootcamps?page=${pagination.next.page}`}
+                            >
+                              Next
+                            </Link>
+                          </li>
+                        )}
+                      </ul>
+                    </ul>
+                  </div>
+                )}
             </div>
           </div>
         </div>
       </main>
-      {pagination &&
-        Object.keys(pagination).length !== 0 &&
-        pagination.constructor === Object && (
-          <div>
-            <ul className="pagination">
-              <ul>
-                {pagination.prev && (
-                  <li>
-                    <Link
-                      className="btn btn-block btn-pagination"
-                      to={`/bootcamps?page=${pagination.prev.page}`}
-                    >
-                      Previous
-                    </Link>
-                  </li>
-                )}
-                {pagination.next && (
-                  <li>
-                    <Link
-                      className="btn btn-block btn-pagination"
-                      to={`/bootcamps?page=${pagination.next.page}`}
-                    >
-                      Next
-                    </Link>
-                  </li>
-                )}
-              </ul>
-            </ul>
-          </div>
-        )}
     </Fragment>
   );
 };
