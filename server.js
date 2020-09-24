@@ -99,3 +99,6 @@ process.on("unhandledRejection", (err, promise) => {
   // Stop server and exit
   server.close(() => process.exit(1));
 });
+
+//For test
+module.exports = server;
