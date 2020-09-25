@@ -4,25 +4,6 @@ const Bootcamp = require("../models/Bootcamp");
 const geocoder = require("../utils/geocoder");
 const path = require("path");
 
-//@desc      Get all bootcamps
-//@route     GET /api/v1/bootcamps
-//@access    Public
-exports.getBootcamps = asyncHandler(async (req, res, next) => {
-  res.status(200).json(res.advancedQuery);
-});
-
-//@desc      Get bootcamp
-//@route     GET /api/v1/bootcamps/:id
-//@access    Public
-exports.getBootcamp = asyncHandler(async (req, res, next) => {
-  const bootcamp = await Bootcamp.findById(req.params.id).populate("courses");
-  if (!bootcamp) {
-    return next(new ErrorResponse(`Bootcamp not found with the ID ${req.params.id}`, 404));
-  }
-
-  res.status(200).json({ success: true, data: bootcamp });
-});
-
 //@desc      Add bootcamp
 //@route     POST /api/v1/bootcamps
 //@access    Private
@@ -40,6 +21,25 @@ exports.addBootcamp = asyncHandler(async (req, res, next) => {
   const bootcamp = await Bootcamp.create(req.body);
 
   res.status(201).json({ success: true, data: bootcamp });
+});
+
+//@desc      Get all bootcamps
+//@route     GET /api/v1/bootcamps
+//@access    Public
+exports.getBootcamps = asyncHandler(async (req, res, next) => {
+  res.status(200).json(res.advancedQuery);
+});
+
+//@desc      Get bootcamp
+//@route     GET /api/v1/bootcamps/:id
+//@access    Public
+exports.getBootcamp = asyncHandler(async (req, res, next) => {
+  const bootcamp = await Bootcamp.findById(req.params.id).populate("courses");
+  if (!bootcamp) {
+    return next(new ErrorResponse(`Bootcamp not found with the ID ${req.params.id}`, 404));
+  }
+
+  res.status(200).json({ success: true, data: bootcamp });
 });
 
 //@desc      Update a bootcamp
