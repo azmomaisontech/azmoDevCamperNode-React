@@ -136,7 +136,6 @@ exports.uploadPhoto = asyncHandler(async (req, res, next) => {
     return next(new ErrorResponse(`Please upload an image less than ${process.env.MAX_FILE_SIZE}`, 400));
   }
 
-  // console.log(file);
   //Create custom file name
   file.name = `photo_${bootcamp.id}${path.parse(file.name).ext}`;
 

@@ -10,22 +10,17 @@ describe("/api/v1/bootcamps", () => {
   let secondToken;
   beforeAll(async () => {
     server = require("../../../server");
-    let firstUser = new User({
-      name: "a",
-      email: "a@test.com",
-      password: "123456",
-      role: "publisher"
-    });
-    let secondUser = new User({
-      name: "b",
-      email: "b@test.com",
-      password: "123456",
-      role: "publisher"
-    });
-    await firstUser.save();
-    await secondUser.save();
-    firstToken = await firstUser.getSignedJwtToken();
-    secondToken = await secondUser.getSignedJwtToken();
+
+    const firstUser = await request(server)
+      .post("/api/v1/auth/register")
+      .send({ name: "a", email: "a@test.com", password: "testing", role: "publisher" });
+
+    const secondUser = await request(server)
+      .post("/api/v1/auth/register")
+      .send({ name: "b", email: "b@test.com", password: "testing", role: "publisher" });
+
+    firstToken = firstUser.body.token;
+    secondToken = secondUser.body.token;
   });
 
   afterAll(async () => {
@@ -36,10 +31,11 @@ describe("/api/v1/bootcamps", () => {
 
   describe("Create a bootcamp", () => {
     let bootcamp;
+    let token;
     const exec = async () => {
       return await request(server)
         .post("/api/v1/bootcamps")
-        .set("Authorization", "Bearer " + firstToken)
+        .set("Authorization", "Bearer " + token)
         .send(bootcamp);
     };
 
@@ -48,6 +44,7 @@ describe("/api/v1/bootcamps", () => {
     });
 
     it("Should return 400 error if user has already published a bootamp", async () => {
+      token = firstToken;
       bootcamp = { name: "a", description: "b", address: "9 Queens road, London", careers: ["Other"] };
       await exec();
       const res = await exec();
@@ -56,15 +53,17 @@ describe("/api/v1/bootcamps", () => {
     });
 
     it("Should return 500 error, if user enters a bootcamp name that already exist", async () => {
+      token = firstToken;
       bootcamp = { name: "a", description: "b", address: "9 Queens road, London", careers: ["Other"] };
       await exec();
-      firstToken = secondToken;
+      token = secondToken;
       const res = await exec();
       expect(res.status).toBe(400);
       expect(res.body.error).toMatch(/Already/i);
     });
 
     it("Should return 201 after creating a bootcamp", async () => {
+      token = firstToken;
       bootcamp = { name: "a", description: "b", address: "9 Queens road, London", careers: ["Other"] };
       const res = await exec();
       expect(res.status).toBe(201);
@@ -123,42 +122,132 @@ describe("/api/v1/bootcamps", () => {
 
     describe("Update a bootcamp", () => {
       let id;
-
+      let token;
       const exec = async () => {
         return await request(server)
           .put(`/api/v1/bootcamps/${id}`)
-          .set("Authorization", "Bearer " + firstToken)
+          .set("Authorization", "Bearer " + token)
           .send({ name: "b" });
       };
 
       it("Should return 404 error if bootcamp is not found with the provided Id", async () => {
         id = mongoose.Types.ObjectId();
+        token = firstToken;
         const res = await exec();
         expect(res.status).toBe(404);
         expect(res.body.error).toMatch(/Not found/i);
       });
 
+      it("Should return 401 error if user is not the owner", async () => {
+        id = newBootcamp.body.data._id;
+        token = secondToken;
+        const res = await exec();
+        expect(res.status).toBe(401);
+        expect(res.body.error).toMatch(/Cannot perform/i);
+      });
+
       it("Should return 200 and the new updated info", async () => {
         id = newBootcamp.body.data._id;
+        token = firstToken;
         const res = await exec();
         expect(res.status).toBe(200);
         expect(res.body.data).toHaveProperty("name", "b");
       });
+    });
+
+    describe("Upload photo", () => {
+      let id;
+      let image;
+      let token;
+      const exec = async () => {
+        return await request(server)
+          .put(`/api/v1/bootcamps/${id}/photo`)
+          .set("Authorization", "Bearer " + token)
+          .attach("file", image);
+      };
+
+      it("Should return 404 error if user provide an invalid Id", async () => {
+        id = 1;
+        image = __dirname + "/testImage/correct.jpg";
+        token = firstToken;
+        const res = await exec();
+        expect(res.status).toBe(404);
+      });
+
+      it("Should return 404 error if no bootcamp with the id exist", async () => {
+        id = mongoose.Types.ObjectId();
+        image = __dirname + "/testImage/correct.jpg";
+        token = firstToken;
+        const res = await exec();
+        expect(res.status).toBe(404);
+      });
+
+      it("Should return 400 error if no file was uploaded", async () => {
+        id = newBootcamp.body.data._id;
+        image = "";
+        token = firstToken;
+        const res = await exec();
+        expect(res.status).toBe(400);
+        expect(res.body.error).toMatch(/upload a file/i);
+      });
+
+      it("Should return 400 error if uploaded file is not of type image", async () => {
+        id = newBootcamp.body.data._id;
+        image = __dirname + "/testImage/pdf.pdf";
+        token = firstToken;
+        const res = await exec();
+        expect(res.status).toBe(400);
+        expect(res.body.error).toMatch(/upload/i);
+      });
+
+      it("Should return 400 error if uploaded file larger than 1MB", async () => {
+        id = newBootcamp.body.data._id;
+        image = __dirname + "/testImage/large.jpg";
+        token = firstToken;
+        const res = await exec();
+        expect(res.status).toBe(400);
+        expect(res.body.error).toMatch(/less/i);
+      });
+
+      it("Should just return 200 and the filename", async () => {
+        id = newBootcamp.body.data._id;
+        image = __dirname + "/testImage/correct.jpg";
+        token = firstToken;
+        const res = await exec();
+        expect(res.status).toBe(200);
+        expect(res.body.data).toMatch(/photo/);
+      });
+    });
+
+    describe("Delete a Bootcamp", () => {
+      let id;
+      let token;
+      const exec = async () => {
+        return await request(server)
+          .delete(`/api/v1/bootcamps/${id}`)
+          .set("Authorization", "Bearer " + token);
+      };
+
+      it("Should return 404 error if bootcamp is not found with the provided Id", async () => {
+        id = mongoose.Types.ObjectId();
+        token = firstToken;
+        const res = await exec();
+        expect(res.status).toBe(404);
+        expect(res.body.error).toMatch(/Not found/i);
+      });
 
       it("Should return 401 error if user is not the owner", async () => {
         id = newBootcamp.body.data._id;
-        let newUser = new User({
-          name: "C",
-          email: "c@test.com",
-          password: "123456",
-          role: "publisher"
-        });
-        await newUser.save();
-        firstToken = await newUser.getSignedJwtToken();
-
+        token = secondToken;
         const res = await exec();
         expect(res.status).toBe(401);
-        expect(res.body.error).toMatch(/Cannot perform/i);
+      });
+
+      it("Should return 200 if bootcamp is deleted successfully", async () => {
+        id = newBootcamp.body.data._id;
+        token = firstToken;
+        const res = await exec();
+        expect(res.status).toBe(200);
       });
     });
   });
