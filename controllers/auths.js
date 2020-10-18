@@ -1,6 +1,6 @@
 const User = require("../models/User");
 const asyncHandler = require("../middleware/async");
-// const sendEmail = require("../utils/sendEmail");
+const sendEmail = require("../utils/sendEmail");
 const ErrorResponse = require("../utils/errorResponse");
 const crypto = require("crypto");
 
@@ -10,21 +10,18 @@ const sendTokenResponse = (user, statusCode, res) => {
 
   const options = {
     expires: new Date(Date.now() + process.env.JWT_COOKIE_EXP * 24 * 60 * 60 * 1000),
-    httpOnly: true
+    httpOnly: true,
   };
 
   if (process.env.NODE_ENV === "production") {
     options.secure = true;
   }
 
-  res
-    .status(statusCode)
-    .cookie("token", token, options)
-    .json({
-      success: true,
-      data: user,
-      token
-    });
+  res.status(statusCode).cookie("token", token, options).json({
+    success: true,
+    data: user,
+    token,
+  });
 };
 
 // @Desc Register a new User
@@ -37,7 +34,7 @@ exports.registerUser = asyncHandler(async (req, res, next) => {
     name,
     email,
     password,
-    role
+    role,
   });
 
   sendTokenResponse(user, 201, res);
@@ -73,7 +70,7 @@ exports.getAUser = asyncHandler(async (req, res, next) => {
 
   res.status(200).json({
     success: true,
-    data: user
+    data: user,
   });
 });
 
@@ -83,11 +80,11 @@ exports.getAUser = asyncHandler(async (req, res, next) => {
 exports.logoutUser = asyncHandler(async (req, res, next) => {
   res.cookie("token", "none", {
     expires: new Date(Date.now() + 10 * 1000),
-    httpOnly: true
+    httpOnly: true,
   });
 
   res.status(200).json({
-    success: true
+    success: true,
   });
 });
 
@@ -102,39 +99,34 @@ exports.forgotPassword = asyncHandler(async (req, res, next) => {
   const resetToken = user.generateResetPasswordToken();
 
   await user.save({
-    validateBeforeSave: false
+    validateBeforeSave: false,
   });
 
   const resetUrl = `${req.protocol}://${req.get("host")}/api/v1/auth/forgotpassword/${resetToken}`;
 
   const message = `You are receiving this email because you (or someone else) has requested the reset of a password. Please make a PUT request to: \n\n ${resetUrl}`;
 
-  // try {
-  //   await sendEmail({
-  //     message,
-  //     subject: "Password Reset Token",
-  //     email: user.email
-  //   });
+  try {
+    await sendEmail({
+      message,
+      subject: "Password Reset Token",
+      email: user.email,
+    });
 
-  //   res.status(200).json({
-  //     success: true,
-  //     data: "Email sent"
-  //   });
-  // } catch (err) {
-  //   console.error(err);
-  //   user.resetPasswordToken = undefined;
-  //   user.resetPasswordExpire = undefined;
+    res.status(200).json({
+      success: true,
+      data: "Email sent",
+    });
+  } catch (err) {
+    console.error(err);
+    user.resetPasswordToken = undefined;
+    user.resetPasswordExpire = undefined;
 
-  //   await user.save({
-  //     validateBeforeSave: false
-  //   });
-  //   return next(new ErrorResponse(`Email could not be sent`, 500));
-  // }
-
-  res.status(200).json({
-    success: true,
-    data: message
-  });
+    await user.save({
+      validateBeforeSave: false,
+    });
+    return next(new ErrorResponse(`Email could not be sent`, 500));
+  }
 });
 
 // @desc      Reset password
@@ -142,14 +134,11 @@ exports.forgotPassword = asyncHandler(async (req, res, next) => {
 // @access    Public
 exports.resetPassword = asyncHandler(async (req, res, next) => {
   // Get hashed token
-  const resetPasswordToken = crypto
-    .createHash("sha256")
-    .update(req.params.resettoken)
-    .digest("hex");
+  const resetPasswordToken = crypto.createHash("sha256").update(req.params.resettoken).digest("hex");
 
   const user = await User.findOne({
     resetPasswordToken,
-    resetPasswordExpire: { $gt: Date.now() }
+    resetPasswordExpire: { $gt: Date.now() },
   });
 
   if (!user) {
@@ -171,17 +160,17 @@ exports.resetPassword = asyncHandler(async (req, res, next) => {
 exports.updateUserDetails = asyncHandler(async (req, res, next) => {
   const fieldsToUpdate = {
     name: req.body.name,
-    email: req.body.email
+    email: req.body.email,
   };
 
   const user = await User.findByIdAndUpdate(req.user.id, fieldsToUpdate, {
     new: true,
-    runValidators: true
+    runValidators: true,
   });
 
   res.status(200).json({
     success: true,
-    data: user
+    data: user,
   });
 });
 

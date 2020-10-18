@@ -21,7 +21,7 @@ const ManageReview = () => {
     deleteReviews,
     addCurrentReview,
     loading,
-    getReviews
+    getReviews,
   } = bootcampContext;
   const { user } = authContext;
 
@@ -46,7 +46,7 @@ const ManageReview = () => {
   }, [error]);
 
   //To get the review that belongs to a particular logged in user
-  const userReview = reviews.filter(review => review.user === user._id);
+  const userReview = reviews.filter((review) => review.user === user._id);
 
   if (userReview.length === 0 && !loading)
     return (
@@ -76,7 +76,7 @@ const ManageReview = () => {
               </thead>
               <tbody>
                 {userReview !== null &&
-                  userReview.map(review => (
+                  userReview.map((review) => (
                     <tr key={review._id}>
                       <td>{review.bootcamp.name} </td>
                       <td>{review.ratings}</td>
@@ -88,10 +88,7 @@ const ManageReview = () => {
                         >
                           <i className="fas fa-pen"></i>
                         </Link>
-                        <button
-                          onClick={() => deleteReviews(review._id)}
-                          className="btn btn-sm btn-danger"
-                        >
+                        <button onClick={() => deleteReviews(review._id)} className="btn btn-sm btn-danger">
                           <i className="fas fa-times"></i>
                         </button>
                       </td>
