@@ -1,61 +1,29 @@
-import React, { useReducer } from "react";
-import BootcampContext from "./bootcampContext";
-import BootcampReducer from "./bootcampReducer";
+import React, { useReducer, createContext } from "react";
 import axios from "axios";
-import {
-  SET_LOADING,
-  GET_BOOTCAMPS,
-  GET_BOOTCAMP,
-  BOOTCAMP_UPDATE,
-  BOOTCAMP_CREATE,
-  BOOTCAMP_DELETE,
-  FILTERED_BOOTCAMP,
-  CLEAR_FILTER,
-  BOOTCAMP_PHOTO,
-  SET_CURRENT,
-  CLEAR_CURRENT,
-  BOOTCAMP_ERROR,
-  CLEAR_ERROR,
-  CLEAR_SUCCESS,
-  CLEAR_BOOTCAMPS,
-  CLEAR_BOOTCAMP,
-  ADD_COURSE,
-  UPDATE_COURSE,
-  DELETE_COURSE,
-  CURRENT_COURSE,
-  CLEAR_CURRENTCOURSE,
-  COURSE_ERROR,
-  ADD_REVIEW,
-  UPDATE_REVIEW,
-  DELETE_REVIEW,
-  GET_REVIEWS,
-  CLEAR_REVIEWS,
-  GETBOOTCAMP_REVIEWS,
-  CLEARBOOTCAMP_REVIEWS,
-  SET_CURRENTREVIEW,
-  CLEAR_CURRENTREVIEW,
-  REVIEW_ERROR
-} from "../type";
+import BootcampReducer from "./bootcampReducer";
+import { StateEnum, Props, BContextProps } from "../type";
 
-const BootcampState = props => {
-  const initialState = {
-    bootcamps: [],
-    bootcamp: null,
-    currentBootcamp: null,
-    courses: [],
-    currentCourse: null,
-    reviews: [],
-    bootcampReviews: null,
-    currentReview: null,
-    image: null,
-    filtered: null,
-    count: null,
-    pagination: null,
-    loading: false,
-    success: false,
-    error: null
-  };
+const initialState = {
+  bootcamps: [],
+  bootcamp: null,
+  currentBootcamp: null,
+  courses: [],
+  currentCourse: null,
+  reviews: [],
+  bootcampReviews: null,
+  currentReview: null,
+  image: null,
+  filtered: null,
+  count: null,
+  pagination: null,
+  loading: false,
+  success: false,
+  error: null,
+};
 
+const BootcampContext = createContext<Partial<BContextProps>>({});
+
+const BootcampState: React.FC<Props> = ({ children }: any) => {
   const [state, dispatch] = useReducer(BootcampReducer, initialState);
 
   //   Methods
@@ -66,141 +34,129 @@ const BootcampState = props => {
     setLoading();
 
     try {
-      const res = await axios.get(
-        `/api/v1/bootcamps?limit=${limit}&page=${page}`
-      );
+      const res = await axios.get(`/api/v1/bootcamps?limit=${limit}&page=${page}`);
       dispatch({
-        type: GET_BOOTCAMPS,
-        payload: res.data
+        type: StateEnum.GET_BOOTCAMPS,
+        payload: res.data,
       });
     } catch (err) {
       dispatch({
-        type: BOOTCAMP_ERROR,
-        payload: err.response.data.error
+        type: StateEnum.BOOTCAMP_ERROR,
+        payload: err.response.data.error,
       });
     }
   };
 
   //Get a particular bootcamp
-  const getBootcamp = async id => {
+  const getBootcamp = async (id: string) => {
     setLoading();
 
     try {
       const res = await axios.get(`/api/v1/bootcamps/${id}`);
       dispatch({
-        type: GET_BOOTCAMP,
-        payload: res.data
+        type: StateEnum.GET_BOOTCAMP,
+        payload: res.data,
       });
     } catch (err) {
       dispatch({
-        type: BOOTCAMP_ERROR,
-        payload: err.response.data.error
+        type: StateEnum.BOOTCAMP_ERROR,
+        payload: err.response.data.error,
       });
     }
   };
 
   //Create a new bootcamp
-  const addBootcamp = async formData => {
+  const addBootcamp = async (formData: any) => {
     setLoading();
     const config = {
       headers: {
-        "Content-Type": "application/json"
-      }
+        "Content-Type": "application/json",
+      },
     };
 
     try {
       const res = await axios.post("/api/v1/bootcamps", formData, config);
       dispatch({
-        type: BOOTCAMP_CREATE,
-        payload: res.data
+        type: StateEnum.BOOTCAMP_CREATE,
+        payload: res.data,
       });
     } catch (err) {
       dispatch({
-        type: BOOTCAMP_ERROR,
-        payload: err.response.data.error
+        type: StateEnum.BOOTCAMP_ERROR,
+        payload: err.response.data.error,
       });
     }
   };
 
   //Update a bootcamp
-  const updateBootcamp = async (formData, bootcampId) => {
+  const updateBootcamp = async (formData: any, bootcampId: any) => {
     setLoading();
     const config = {
       headers: {
-        "Content-Type": "application/json"
-      }
+        "Content-Type": "application/json",
+      },
     };
 
     try {
-      const res = await axios.put(
-        `/api/v1/bootcamps/${bootcampId}`,
-        formData,
-        config
-      );
+      const res = await axios.put(`/api/v1/bootcamps/${bootcampId}`, formData, config);
 
       dispatch({
-        type: BOOTCAMP_UPDATE,
-        payload: res.data
+        type: StateEnum.BOOTCAMP_UPDATE,
+        payload: res.data,
       });
     } catch (err) {
       dispatch({
-        type: BOOTCAMP_ERROR,
-        payload: err.response.data.error
+        type: StateEnum.BOOTCAMP_ERROR,
+        payload: err.response.data.error,
       });
     }
   };
 
   //Upload bootcamp image
-  const uploadImage = async (file, bootcampId) => {
+  const uploadImage = async (file: any, bootcampId: any) => {
     setLoading();
     const formData = new FormData();
     formData.append("file", file);
     const config = {
       headers: {
-        "Content-Type": "multipart/form-data"
-      }
+        "Content-Type": "multipart/form-data",
+      },
     };
 
     try {
-      const res = await axios.put(
-        `/api/v1/bootcamps/${bootcampId}/photo`,
-        formData,
-        config
-      );
+      const res = await axios.put(`/api/v1/bootcamps/${bootcampId}/photo`, formData, config);
       dispatch({
-        type: BOOTCAMP_PHOTO,
+        type: StateEnum.BOOTCAMP_PHOTO,
         payload: {
           response: res.data,
-          id: bootcampId
-        }
+          id: bootcampId,
+        },
       });
     } catch (err) {
       dispatch({
-        type: BOOTCAMP_ERROR,
-        payload: err.response.data.error
+        type: StateEnum.BOOTCAMP_ERROR,
+        payload: err.response.data.error,
       });
     }
   };
 
-  const filterBootcamp = async (zipcode, searchRad) => {
+  const filterBootcamp = async (zipcode: any, searchRad: any) => {
     setLoading();
     try {
-      const res = await axios.get(
-        `/api/v1/bootcamps/radius/${zipcode}/${searchRad}`
-      );
+      const res = await axios.get(`/api/v1/bootcamps/radius/${zipcode}/${searchRad}`);
       dispatch({
-        type: FILTERED_BOOTCAMP,
-        payload: res.data
+        type: StateEnum.FILTERED_BOOTCAMP,
+        payload: res.data,
       });
     } catch (err) {
       dispatch({
-        type: BOOTCAMP_ERROR,
-        payload: err.response.data.error
+        type: StateEnum.BOOTCAMP_ERROR,
+        payload: err.response.data.error,
       });
     }
   };
 
-  const selectBootcamp = async (averageRating, averageCost) => {
+  const selectBootcamp = async (averageRating: any, averageCost: any) => {
     setLoading();
     try {
       const res = await axios.get(
@@ -208,174 +164,166 @@ const BootcampState = props => {
       );
 
       dispatch({
-        type: FILTERED_BOOTCAMP,
-        payload: res.data
+        type: StateEnum.FILTERED_BOOTCAMP,
+        payload: res.data,
       });
     } catch (err) {
       dispatch({
-        type: BOOTCAMP_ERROR,
-        payload: err.response.data.error
+        type: StateEnum.BOOTCAMP_ERROR,
+        payload: err.response.data.error,
       });
     }
   };
 
   const clearFiltered = () => {
     dispatch({
-      type: CLEAR_FILTER
+      type: StateEnum.CLEAR_FILTER,
     });
   };
 
   //Delete bootcamp
-  const deleteBootcamp = async bootcampId => {
+  const deleteBootcamp = async (bootcampId: any) => {
     setLoading();
     try {
       await axios.delete(`/api/v1/bootcamps/${bootcampId}`);
       dispatch({
-        type: BOOTCAMP_DELETE,
-        payload: bootcampId
+        type: StateEnum.BOOTCAMP_DELETE,
+        payload: bootcampId,
       });
     } catch (err) {
       dispatch({
-        type: BOOTCAMP_ERROR,
-        payload: err.response.data.error
+        type: StateEnum.BOOTCAMP_ERROR,
+        payload: err.response.data.error,
       });
     }
   };
 
   //Set personal bootcamp to currentbootcamp state
-  const setCurrent = bootcamp => {
+  const setCurrent = (bootcamp: any) => {
     dispatch({
-      type: SET_CURRENT,
-      payload: bootcamp
+      type: StateEnum.SET_CURRENT,
+      payload: bootcamp,
     });
   };
 
   //Clear personal bootcamp from currentbootcamp state
   const clearCurrent = () => {
     dispatch({
-      type: CLEAR_CURRENT
+      type: StateEnum.CLEAR_CURRENT,
     });
   };
 
   //Clear errors
   const clearError = () => {
     dispatch({
-      type: CLEAR_ERROR
+      type: StateEnum.CLEAR_ERROR,
     });
   };
 
   //Set Loading
   const setLoading = () => {
     dispatch({
-      type: SET_LOADING
+      type: StateEnum.SET_LOADING,
     });
   };
 
   //Clear Success. This is used to effectively manage the Alert System.
   const clearSuccess = () => {
     dispatch({
-      type: CLEAR_SUCCESS
+      type: StateEnum.CLEAR_SUCCESS,
     });
   };
 
   //Clear individual bootcamp after page visit
   const clearBootcamp = () => {
     dispatch({
-      type: CLEAR_BOOTCAMP
+      type: StateEnum.CLEAR_BOOTCAMP,
     });
   };
 
   //Clear bootcamp on logout
   const clearBootcamps = () => {
     dispatch({
-      type: CLEAR_BOOTCAMPS
+      type: StateEnum.CLEAR_BOOTCAMPS,
     });
   };
 
   // Courses
 
   //Add a new course associated with a bootcamp
-  const addCourse = async (formData, bootcampId) => {
+  const addCourse = async (formData: any, bootcampId: any) => {
     setLoading();
     const config = {
       headers: {
-        "Content-Type": "application/json"
-      }
+        "Content-Type": "application/json",
+      },
     };
     try {
-      const res = await axios.post(
-        `/api/v1/bootcamps/${bootcampId}/courses`,
-        formData,
-        config
-      );
+      const res = await axios.post(`/api/v1/bootcamps/${bootcampId}/courses`, formData, config);
       dispatch({
-        type: ADD_COURSE,
-        payload: res.data
+        type: StateEnum.ADD_COURSE,
+        payload: res.data,
       });
     } catch (err) {
       dispatch({
-        type: COURSE_ERROR,
-        payload: err.response.data.error
+        type: StateEnum.COURSE_ERROR,
+        payload: err.response.data.error,
       });
     }
   };
 
   //Update a course
-  const updateCourse = async (formData, courseId) => {
+  const updateCourse = async (formData: any, courseId: any) => {
     setLoading();
     const config = {
       headers: {
-        "Content-Type": "application/json"
-      }
+        "Content-Type": "application/json",
+      },
     };
 
     try {
-      const res = await axios.put(
-        `/api/v1/courses/${courseId}`,
-        formData,
-        config
-      );
+      const res = await axios.put(`/api/v1/courses/${courseId}`, formData, config);
       dispatch({
-        type: UPDATE_COURSE,
-        payload: res.data
+        type: StateEnum.UPDATE_COURSE,
+        payload: res.data,
       });
     } catch (err) {
       dispatch({
-        type: COURSE_ERROR,
-        payload: err.response.data.error
+        type: StateEnum.COURSE_ERROR,
+        payload: err.response.data.error,
       });
     }
   };
 
   //Delete a course
-  const deleteCourse = async courseId => {
+  const deleteCourse = async (courseId: any) => {
     setLoading();
     try {
       await axios.delete(`/api/v1/courses/${courseId}`);
       dispatch({
-        type: DELETE_COURSE,
-        payload: courseId
+        type: StateEnum.DELETE_COURSE,
+        payload: courseId,
       });
     } catch (err) {
       dispatch({
-        type: COURSE_ERROR,
-        payload: err.response.data.error
+        type: StateEnum.COURSE_ERROR,
+        payload: err.response.data.error,
       });
     }
   };
 
   //Add current course to the currentCourse state, to dynamically edit or delete
-  const addCurrentCourse = course => {
+  const addCurrentCourse = (course: any) => {
     dispatch({
-      type: CURRENT_COURSE,
-      payload: course
+      type: StateEnum.CURRENT_COURSE,
+      payload: course,
     });
   };
 
   //clear current course from the state after each edit or delete
   const clearCurrentCourse = () => {
     dispatch({
-      type: CLEAR_CURRENTCOURSE
+      type: StateEnum.CLEAR_CURRENTCOURSE,
     });
   };
 
@@ -386,13 +334,13 @@ const BootcampState = props => {
     try {
       const res = await axios.get("/api/v1/reviews");
       dispatch({
-        type: GET_REVIEWS,
-        payload: res.data
+        type: StateEnum.GET_REVIEWS,
+        payload: res.data,
       });
     } catch (err) {
       dispatch({
-        type: REVIEW_ERROR,
-        payload: err.response.data.error
+        type: StateEnum.REVIEW_ERROR,
+        payload: err.response.data.error,
       });
     }
   };
@@ -400,115 +348,107 @@ const BootcampState = props => {
   // Clear all reviews
   const clearReviews = () => {
     dispatch({
-      type: CLEAR_REVIEWS
+      type: StateEnum.CLEAR_REVIEWS,
     });
   };
 
   //Get all reviews for a particular bootcamp
-  const getBootcampReviews = async bootcampId => {
+  const getBootcampReviews = async (bootcampId: any) => {
     setLoading();
     try {
       const res = await axios.get(`/api/v1/bootcamps/${bootcampId}/reviews`);
       dispatch({
-        type: GETBOOTCAMP_REVIEWS,
-        payload: res.data
+        type: StateEnum.GETBOOTCAMP_REVIEWS,
+        payload: res.data,
       });
     } catch (err) {
       dispatch({
-        type: REVIEW_ERROR,
-        payload: err.response.data.error
+        type: StateEnum.REVIEW_ERROR,
+        payload: err.response.data.error,
       });
     }
   };
 
   const clearBootcampReviews = () => {
     dispatch({
-      type: CLEARBOOTCAMP_REVIEWS
+      type: StateEnum.CLEARBOOTCAMP_REVIEWS,
     });
   };
 
   //add review
-  const addReview = async (formData, bootcampId) => {
+  const addReview = async (formData: any, bootcampId: any) => {
     setLoading();
     const config = {
       headers: {
-        "Content-Type": "application/json"
-      }
+        "Content-Type": "application/json",
+      },
     };
 
     try {
-      const res = await axios.post(
-        `/api/v1/bootcamps/${bootcampId}/reviews`,
-        formData,
-        config
-      );
+      const res = await axios.post(`/api/v1/bootcamps/${bootcampId}/reviews`, formData, config);
       dispatch({
-        type: ADD_REVIEW,
-        payload: res.data
+        type: StateEnum.ADD_REVIEW,
+        payload: res.data,
       });
     } catch (err) {
       dispatch({
-        type: REVIEW_ERROR,
-        payload: err.response.data.error
+        type: StateEnum.REVIEW_ERROR,
+        payload: err.response.data.error,
       });
     }
   };
 
   //Update reviews
-  const updateReview = async (formData, reviewId) => {
+  const updateReview = async (formData: any, reviewId: any) => {
     setLoading();
     const config = {
       headers: {
-        "Content-Type": "application/json"
-      }
+        "Content-Type": "application/json",
+      },
     };
     try {
-      const res = await axios.put(
-        `/api/v1/reviews/${reviewId}`,
-        formData,
-        config
-      );
+      const res = await axios.put(`/api/v1/reviews/${reviewId}`, formData, config);
       dispatch({
-        type: UPDATE_REVIEW,
-        payload: res.data
+        type: StateEnum.UPDATE_REVIEW,
+        payload: res.data,
       });
     } catch (err) {
       dispatch({
-        type: REVIEW_ERROR,
-        payload: err.response.data.error
+        type: StateEnum.REVIEW_ERROR,
+        payload: err.response.data.error,
       });
     }
   };
 
   //Delete reviews
-  const deleteReviews = async reviewId => {
+  const deleteReviews = async (reviewId: any) => {
     setLoading();
     try {
       await axios.delete(`/api/v1/reviews/${reviewId}`);
       dispatch({
-        type: DELETE_REVIEW,
-        payload: reviewId
+        type: StateEnum.DELETE_REVIEW,
+        payload: reviewId,
       });
     } catch (err) {
       dispatch({
-        type: REVIEW_ERROR,
-        payload: err.response.data.error
+        type: StateEnum.REVIEW_ERROR,
+        payload: err.response.data.error,
       });
     }
   };
 
   //Add current review to the current review state, to dynamically edit
-  const addCurrentReview = review => {
+  const addCurrentReview = (review: any) => {
     dispatch({
-      type: SET_CURRENTREVIEW,
-      payload: review
+      type: StateEnum.SET_CURRENTREVIEW,
+      payload: review,
     });
   };
 
   //clear current review from the state after each edit
   const clearCurrentReview = () => {
     dispatch({
-      type: CLEAR_CURRENTREVIEW
+      type: StateEnum.CLEAR_CURRENTREVIEW,
     });
   };
 
@@ -558,12 +498,12 @@ const BootcampState = props => {
         updateReview,
         deleteReviews,
         addCurrentReview,
-        clearCurrentReview
+        clearCurrentReview,
       }}
     >
-      {props.children}
+      {children}
     </BootcampContext.Provider>
   );
 };
 
-export default BootcampState;
+export { BootcampState, BootcampContext };
