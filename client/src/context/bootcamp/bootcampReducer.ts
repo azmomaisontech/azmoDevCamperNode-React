@@ -1,6 +1,6 @@
-import { StateEnum, BootcampState, Bootcamp, Course, Review } from "../type";
+import { StateEnum, Bootcamp, Course, Review } from "../type";
 
-export default (state: BootcampState, action: any) => {
+export default (state: any, action: any) => {
   switch (action.type) {
     case StateEnum.GET_BOOTCAMPS:
       return {

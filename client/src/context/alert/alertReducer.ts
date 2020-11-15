@@ -1,12 +1,14 @@
-import { SET_ALERT, CLEAR_ALERT } from "../type";
+import { StateEnum, Alert } from "../type";
 
-export default (state, action) => {
+export default (state: any, action: any) => {
   switch (action.type) {
-    case SET_ALERT:
-      return [...state, action.payload];
+    case StateEnum.SET_ALERT:
+      return {
+        alert: [...state.alert, action.payload],
+      };
 
-    case CLEAR_ALERT:
-      return state.filter(alert => alert.id !== action.payload);
+    case StateEnum.CLEAR_ALERT:
+      return state.alert.filter((alert: Alert) => alert.id !== action.payload);
 
     default:
       return state;

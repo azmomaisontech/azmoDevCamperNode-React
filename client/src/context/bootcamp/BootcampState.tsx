@@ -23,7 +23,7 @@ const initialState = {
 
 const BootcampContext = createContext<Partial<BContextProps>>({});
 
-const BootcampState: React.FC<Props> = ({ children }: any) => {
+const BootcampState: React.FC<Props> = ({ children }) => {
   const [state, dispatch] = useReducer(BootcampReducer, initialState);
 
   //   Methods

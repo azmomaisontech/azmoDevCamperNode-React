@@ -145,6 +145,20 @@ export interface BContextProps extends BootcampState {
   clearCurrentReview: () => void;
 }
 
+export interface Alert {
+  msg: string;
+  type: string;
+  id: string;
+}
+
+export type AlertStateProps = {
+  alerts: Alert[];
+};
+
+export interface AlertContextProps extends AlertStateProps {
+  setAlert: (msg: string, type: string, timeout: number) => void;
+}
+
 export interface Props {
   children: JSX.Element[] | JSX.Element;
 }

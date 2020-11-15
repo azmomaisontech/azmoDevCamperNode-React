@@ -17,7 +17,7 @@ import ReadReviews from "./component/reviews/ReadReviews";
 import AddReview from "./component/reviews/AddReview";
 import ManageCourses from "./component/courses/ManageCourses";
 import AddCourse from "./component/courses/AddCourse";
-import AlertState from "./context/alert/AlertState";
+import { AlertState } from "./context/alert/AlertState";
 import { BootcampState } from "./context/bootcamp/BootcampState";
 import PrivateRoute from "./util/PrivateRoute";
 import NotFound from "./component/layout/NotFound";
