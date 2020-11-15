@@ -44,7 +44,7 @@ export enum StateEnum {
 }
 
 export interface User {
-  id: string;
+  _id: string;
   role: string;
   name: string;
   email: string;
@@ -52,7 +52,7 @@ export interface User {
 }
 
 export interface Bootcamp {
-  id: string;
+  _id: string;
   location: {};
   careers: string[];
   photo: string;
@@ -73,7 +73,7 @@ export interface Bootcamp {
 }
 
 export interface Course {
-  id: string;
+  _id: string;
   scholarshipAvailable: boolean;
   title: string;
   description: string;
@@ -86,7 +86,7 @@ export interface Course {
 }
 
 export interface Review {
-  id: string;
+  _id: string;
   title: string;
   text: "string";
   ratings: number;
@@ -97,13 +97,13 @@ export interface Review {
 
 export type BootcampState = {
   bootcamps: Bootcamp[];
-  bootcamp: Bootcamp;
-  currentBootcamp: Bootcamp;
+  bootcamp: Partial<Bootcamp>;
+  currentBootcamp: Partial<Bootcamp>;
   courses: Course[];
-  currentCourse: Course;
+  currentCourse: Partial<Course>;
   reviews: Review[];
   bootcampReviews: Review[];
-  currentReview: Review;
+  currentReview: Partial<Review>;
   image: string;
   filtered: Bootcamp[];
   count: number;
@@ -115,33 +115,33 @@ export type BootcampState = {
 
 export interface BContextProps extends BootcampState {
   getBootcamps: () => void;
-  getBootcamp: () => void;
-  addBootcamp: () => void;
-  updateBootcamp: () => void;
-  deleteBootcamp: () => void;
-  filterBootcamp: () => void;
-  selectBootcamp: () => void;
-  uploadImage: () => void;
+  getBootcamp: (id: string) => void;
+  addBootcamp: (formData: Partial<Bootcamp>) => void;
+  updateBootcamp: (formData: Partial<Bootcamp>, bootcampId: string) => void;
+  deleteBootcamp: (bootcampId: string) => void;
+  filterBootcamp: (zipcode: any, searchRad: any) => void;
+  selectBootcamp: (averageRating: any, averageCost: any) => void;
+  uploadImage: (file: any, bootcampId: string) => void;
   clearFiltered: () => void;
-  setCurrent: () => void;
+  setCurrent: (bootcamp: Partial<Bootcamp>) => void;
   clearCurrent: () => void;
   clearError: () => void;
   clearSuccess: () => void;
   clearBootcamps: () => void;
   clearBootcamp: () => void;
-  addCourse: () => void;
-  updateCourse: () => void;
-  deleteCourse: () => void;
-  addCurrentCourse: () => void;
+  addCourse: (formData: Partial<Course>, bootcampId: string) => void;
+  updateCourse: (formData: Partial<Course>, courseId: string) => void;
+  deleteCourse: (courseId: string) => void;
+  addCurrentCourse: (course: Partial<Course>) => void;
   clearCurrentCourse: () => void;
   getReviews: () => void;
   clearReviews: () => void;
-  getBootcampReviews: () => void;
+  getBootcampReviews: (bootcampId: string) => void;
   clearBootcampReviews: () => void;
-  addReview: () => void;
-  updateReview: () => void;
-  deleteReviews: () => void;
-  addCurrentReview: () => void;
+  addReview: (formData: Partial<Review>, bootcampId: string) => void;
+  updateReview: (formData: Partial<Review>, reviewId: string) => void;
+  deleteReviews: (reviewId: string) => void;
+  addCurrentReview: (review: Partial<Review>) => void;
   clearCurrentReview: () => void;
 }
 

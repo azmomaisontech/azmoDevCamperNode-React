@@ -1,130 +1,94 @@
-import {
-  SET_LOADING,
-  GET_BOOTCAMPS,
-  GET_BOOTCAMP,
-  BOOTCAMP_UPDATE,
-  BOOTCAMP_CREATE,
-  BOOTCAMP_DELETE,
-  BOOTCAMP_PHOTO,
-  SET_CURRENT,
-  CLEAR_CURRENT,
-  BOOTCAMP_ERROR,
-  CLEAR_ERROR,
-  CLEAR_SUCCESS,
-  CLEAR_BOOTCAMPS,
-  CLEAR_BOOTCAMP,
-  ADD_COURSE,
-  UPDATE_COURSE,
-  DELETE_COURSE,
-  CURRENT_COURSE,
-  CLEAR_CURRENTCOURSE,
-  COURSE_ERROR,
-  ADD_REVIEW,
-  UPDATE_REVIEW,
-  DELETE_REVIEW,
-  GETBOOTCAMP_REVIEWS,
-  CLEARBOOTCAMP_REVIEWS,
-  GET_REVIEWS,
-  CLEAR_REVIEWS,
-  SET_CURRENTREVIEW,
-  CLEAR_CURRENTREVIEW,
-  REVIEW_ERROR,
-  FILTERED_BOOTCAMP
-} from "../type";
+import { StateEnum, BootcampState, Bootcamp, Course, Review } from "../type";
 
-export default (state, action) => {
+export default (state: BootcampState, action: any) => {
   switch (action.type) {
-    case GET_BOOTCAMPS:
+    case StateEnum.GET_BOOTCAMPS:
       return {
         ...state,
         bootcamps: action.payload.data,
         pagination: action.payload.pagination,
         count: action.payload.count,
-        loading: false
+        loading: false,
       };
-    case GET_BOOTCAMP:
+    case StateEnum.GET_BOOTCAMP:
       return {
         ...state,
         bootcamp: action.payload.data,
-        loading: false
+        loading: false,
       };
 
-    case BOOTCAMP_CREATE:
+    case StateEnum.BOOTCAMP_CREATE:
       return {
         ...state,
         bootcamps: [...state.bootcamps, action.payload.data],
         success: action.payload.success,
-        loading: false
+        loading: false,
       };
-    case BOOTCAMP_UPDATE:
+    case StateEnum.BOOTCAMP_UPDATE:
       return {
         ...state,
-        bootcamps: state.bootcamps.map(bootcamp =>
-          bootcamp._id === action.payload.data._id
-            ? action.payload.data
-            : bootcamp
+        bootcamps: state.bootcamps.map((bootcamp: Bootcamp) =>
+          bootcamp._id === action.payload.data._id ? action.payload.data : bootcamp
         ),
         success: action.payload.success,
-        loading: false
+        loading: false,
       };
-    case BOOTCAMP_DELETE:
+    case StateEnum.BOOTCAMP_DELETE:
       return {
         ...state,
-        bootcamps: state.bootcamps.filter(
-          bootcamp => bootcamp._id !== action.payload
-        )
+        bootcamps: state.bootcamps.filter((bootcamp: Bootcamp) => bootcamp._id !== action.payload),
       };
-    case BOOTCAMP_PHOTO:
+    case StateEnum.BOOTCAMP_PHOTO:
       return {
         ...state,
         image: action.payload.response.data,
         success: action.payload.response.success,
-        loading: false
+        loading: false,
       };
-    case FILTERED_BOOTCAMP:
+    case StateEnum.FILTERED_BOOTCAMP:
       return {
         ...state,
         bootcamps: action.payload.data,
         pagination: null,
         loading: false,
-        count: action.payload.count
+        count: action.payload.count,
       };
-    case SET_CURRENT:
+    case StateEnum.SET_CURRENT:
       return {
         ...state,
         currentBootcamp: action.payload,
-        courses: action.payload.courses
+        courses: action.payload.courses,
       };
-    case CLEAR_CURRENT:
+    case StateEnum.CLEAR_CURRENT:
       return {
         ...state,
         currentBootcamp: null,
-        courses: []
+        courses: [],
       };
-    case BOOTCAMP_ERROR:
-    case COURSE_ERROR:
-    case REVIEW_ERROR:
+    case StateEnum.BOOTCAMP_ERROR:
+    case StateEnum.COURSE_ERROR:
+    case StateEnum.REVIEW_ERROR:
       return {
         ...state,
         error: action.payload,
-        loading: false
+        loading: false,
       };
-    case SET_LOADING:
+    case StateEnum.SET_LOADING:
       return {
         ...state,
-        loading: true
+        loading: true,
       };
-    case CLEAR_SUCCESS:
+    case StateEnum.CLEAR_SUCCESS:
       return {
         ...state,
-        success: false
+        success: false,
       };
-    case CLEAR_ERROR:
+    case StateEnum.CLEAR_ERROR:
       return {
         ...state,
-        error: null
+        error: null,
       };
-    case CLEAR_BOOTCAMPS:
+    case StateEnum.CLEAR_BOOTCAMPS:
       return {
         ...state,
         bootcamps: [],
@@ -138,98 +102,98 @@ export default (state, action) => {
         currentBootcamp: null,
         courses: [],
         reviews: [],
-        error: null
+        error: null,
       };
-    case CLEAR_BOOTCAMP:
+    case StateEnum.CLEAR_BOOTCAMP:
       return {
         ...state,
-        bootcamp: null
+        bootcamp: null,
       };
-    case ADD_COURSE:
+    case StateEnum.ADD_COURSE:
       return {
         ...state,
         courses: [...state.courses, action.payload.data],
         success: action.payload.success,
-        loading: false
+        loading: false,
       };
-    case UPDATE_COURSE:
+    case StateEnum.UPDATE_COURSE:
       return {
         ...state,
-        courses: state.courses.map(course =>
+        courses: state.courses.map((course: Course) =>
           course._id === action.payload.data._id ? action.payload.data : course
         ),
         success: action.payload.success,
-        loading: false
+        loading: false,
       };
-    case DELETE_COURSE:
+    case StateEnum.DELETE_COURSE:
       return {
         ...state,
-        courses: state.courses.filter(course => course._id !== action.payload),
-        loading: false
+        courses: state.courses.filter((course: Course) => course._id !== action.payload),
+        loading: false,
       };
-    case CURRENT_COURSE:
+    case StateEnum.CURRENT_COURSE:
       return {
         ...state,
-        currentCourse: action.payload
+        currentCourse: action.payload,
       };
-    case CLEAR_CURRENTCOURSE:
+    case StateEnum.CLEAR_CURRENTCOURSE:
       return {
         ...state,
-        currentCourse: null
+        currentCourse: null,
       };
-    case GET_REVIEWS:
+    case StateEnum.GET_REVIEWS:
       return {
         ...state,
         reviews: action.payload.data,
-        loading: false
+        loading: false,
       };
-    case CLEAR_REVIEWS:
+    case StateEnum.CLEAR_REVIEWS:
       return {
         ...state,
-        reviews: []
+        reviews: [],
       };
-    case GETBOOTCAMP_REVIEWS:
+    case StateEnum.GETBOOTCAMP_REVIEWS:
       return {
         ...state,
         bootcampReviews: action.payload.data,
-        loading: false
+        loading: false,
       };
-    case CLEARBOOTCAMP_REVIEWS:
+    case StateEnum.CLEARBOOTCAMP_REVIEWS:
       return {
         ...state,
-        bootcampReviews: null
+        bootcampReviews: null,
       };
-    case ADD_REVIEW:
+    case StateEnum.ADD_REVIEW:
       return {
         ...state,
         reviews: [...state.reviews, action.payload.data],
         success: action.payload.success,
-        loading: false
+        loading: false,
       };
-    case UPDATE_REVIEW:
+    case StateEnum.UPDATE_REVIEW:
       return {
         ...state,
-        reviews: state.reviews.map(review =>
+        reviews: state.reviews.map((review: Review) =>
           review._id === action.payload.data._id ? action.payload.data : review
         ),
         success: action.payload.success,
-        loading: false
+        loading: false,
       };
-    case DELETE_REVIEW:
+    case StateEnum.DELETE_REVIEW:
       return {
         ...state,
-        reviews: state.reviews.filter(review => review._id !== action.payload),
-        loading: false
+        reviews: state.reviews.filter((review: Review) => review._id !== action.payload),
+        loading: false,
       };
-    case SET_CURRENTREVIEW:
+    case StateEnum.SET_CURRENTREVIEW:
       return {
         ...state,
-        currentReview: action.payload
+        currentReview: action.payload,
       };
-    case CLEAR_CURRENTREVIEW:
+    case StateEnum.CLEAR_CURRENTREVIEW:
       return {
         ...state,
-        currentReview: null
+        currentReview: null,
       };
     default:
       return state;

@@ -1,24 +1,24 @@
 import React, { useReducer, createContext } from "react";
 import axios from "axios";
 import BootcampReducer from "./bootcampReducer";
-import { StateEnum, Props, BContextProps } from "../type";
+import { StateEnum, BootcampState, Props, BContextProps } from "../type";
 
 const initialState = {
   bootcamps: [],
-  bootcamp: null,
-  currentBootcamp: null,
+  bootcamp: {},
+  currentBootcamp: {},
   courses: [],
-  currentCourse: null,
+  currentCourse: {},
   reviews: [],
-  bootcampReviews: null,
-  currentReview: null,
-  image: null,
-  filtered: null,
-  count: null,
-  pagination: null,
+  bootcampReviews: [],
+  currentReview: {},
+  image: "",
+  filtered: [],
+  count: 0,
+  pagination: {},
   loading: false,
   success: false,
-  error: null,
+  error: {},
 };
 
 const BootcampContext = createContext<Partial<BContextProps>>({});
