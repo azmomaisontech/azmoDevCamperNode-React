@@ -159,6 +159,25 @@ export interface AlertContextProps extends AlertStateProps {
   setAlert: (msg: string, type: string, timeout: number) => void;
 }
 
+export type AuthStateProps = {
+  isAuthenticated: boolean;
+  loading: false;
+  error: string;
+  user: User;
+  success: false;
+};
+
+export interface AuthContextProps extends AuthStateProps {
+  loadUser: () => void;
+  registerUser: (formData: any) => void;
+  loginUser: (formData: any) => void;
+  logoutUser: () => void;
+  updateUser: (formData: any) => void;
+  updatePassword: (formData: any) => void;
+  clearError: () => void;
+  clearSuccess: () => void;
+}
+
 export interface Props {
   children: JSX.Element[] | JSX.Element;
 }
