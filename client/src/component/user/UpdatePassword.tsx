@@ -1,12 +1,12 @@
 import React, { useState, useContext, useEffect } from "react";
-import AuthContext from "../../context/auth/authContext";
-import AlertContext from "../../context/alert/alertContext";
+import { AuthContext } from "../../context/auth/AuthState";
+import { AlertContext } from "../../context/alert/AlertState";
 
-const UpdatePassword = props => {
+const UpdatePassword = (props) => {
   const [user, setUser] = useState({
     currentPassword: "",
     newPassword: "",
-    confirmPassword: ""
+    confirmPassword: "",
   });
 
   const { currentPassword, newPassword, confirmPassword } = user;
@@ -14,16 +14,10 @@ const UpdatePassword = props => {
   const authContext = useContext(AuthContext);
   const alertContext = useContext(AlertContext);
 
-  const {
-    updatePassword,
-    error,
-    clearError,
-    success,
-    clearSuccess
-  } = authContext;
+  const { updatePassword, error, clearError, success, clearSuccess } = authContext;
   const { setAlert } = alertContext;
 
-  const handleChange = e => {
+  const handleChange = (e) => {
     setUser({ ...user, [e.target.name]: e.target.value });
   };
 
@@ -42,11 +36,10 @@ const UpdatePassword = props => {
     [error, success]
   );
 
-  const handleSubmit = e => {
+  const handleSubmit = (e) => {
     e.preventDefault();
 
-    if (newPassword !== confirmPassword)
-      return setAlert("Password does not match", "danger");
+    if (newPassword !== confirmPassword) return setAlert("Password does not match", "danger");
     updatePassword(user);
   };
 
@@ -97,11 +90,7 @@ const UpdatePassword = props => {
               Password does not match
             </p>
           </div>
-          <input
-            type="submit"
-            className="btn btn-dark btn-block"
-            value="Update Password"
-          />
+          <input type="submit" className="btn btn-dark btn-block" value="Update Password" />
         </form>
       </div>
     </main>

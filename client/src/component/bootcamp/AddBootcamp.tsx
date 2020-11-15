@@ -1,8 +1,11 @@
 import React, { useState, useEffect, useContext } from "react";
-import BootcampContext from "../../context/bootcamp/bootcampContext";
-import AlertContext from "../../context/alert/alertContext";
+import { useHistory, useLocation } from "react-router-dom";
+import { BootcampContext } from "../../context/bootcamp/BootcampState";
+import { AlertContext } from "../../context/alert/AlertState";
+import isEmpty from "../../util/isEmpty";
 
-const AddBootcamp = props => {
+const AddBootcamp: React.FC = (props) => {
+  const history = useHistory();
   //Initialize context
   const bootcampContext = useContext(BootcampContext);
   const alertContext = useContext(AlertContext);
@@ -16,7 +19,7 @@ const AddBootcamp = props => {
     error,
     clearError,
     clearSuccess,
-    success
+    success,
   } = bootcampContext;
 
   //Destructure items from the alert context
@@ -33,26 +36,15 @@ const AddBootcamp = props => {
     careers: [],
     housing: false,
     jobAssistance: false,
-    jobGuarantee: false
+    jobGuarantee: false,
   });
 
-  const {
-    name,
-    address,
-    phone,
-    email,
-    website,
-    description,
-    careers,
-    housing,
-    jobAssistance,
-    jobGuarantee
-  } = bootcamp;
+  const { name, address, phone, email, website, description, careers, housing, jobAssistance, jobGuarantee } = bootcamp;
 
   //for page control. To check if we are adding or updating courses.
   //When component mount, check if current Bootcamp has items in it, and then populate the form
   useEffect(() => {
-    if (currentBootcamp !== null) {
+    if (!isEmpty(currentBootcamp)) {
       setBootcamp(currentBootcamp);
     } else {
       setBootcamp({
@@ -65,35 +57,37 @@ const AddBootcamp = props => {
         careers: [],
         housing: false,
         jobAssistance: false,
-        jobGuarantee: false
+        jobGuarantee: false,
       });
     }
 
-    if (error !== null) {
-      setAlert(error, "danger", 4000);
-    } else if (currentBootcamp !== null && success) {
-      setAlert("Bootcamp Updated Successfully", "success");
-      props.history.push("/manage-bootcamp");
+    if (error && !isEmpty(error)) {
+      if (setAlert) setAlert(error, "danger", 4000);
+    } else if (isEmpty(currentBootcamp) && success) {
+      if (setAlert) setAlert("Bootcamp Updated Successfully", "success");
+      history.push("/manage-bootcamp");
     } else if (currentBootcamp === null && success) {
-      setAlert("Bootcamp Added Successfully", "success");
-      props.history.push("/manage-bootcamp");
+      if (setAlert) setAlert("Bootcamp Added Successfully", "success");
+      history.push("/manage-bootcamp");
     }
 
-    clearSuccess();
-    clearError();
+    if (clearSuccess && clearError) {
+      clearSuccess();
+      clearError();
+    }
 
     //eslint-disable-next-line
-  }, [currentBootcamp, error, success, props.history]);
+  }, [currentBootcamp, error, success, history]);
 
   //For adding new bootcamp, form control
-  const handleChange = e => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const target = e.target;
     const value = target.type === "checkbox" ? target.checked : target.value;
     const name = target.name;
     setBootcamp({ ...bootcamp, [name]: value });
   };
 
-  const handleMultipleSelect = e => {
+  const handleMultipleSelect = (e: any) => {
     var options = e.target.options;
     var value = [];
     for (var i = 0, l = options.length; i < l; i++) {
@@ -106,7 +100,7 @@ const AddBootcamp = props => {
   };
 
   //To submit form
-  const handleSubmit = e => {
+  const handleSubmit = (e) => {
     e.preventDefault();
 
     if (currentBootcamp === null) {
@@ -121,10 +115,7 @@ const AddBootcamp = props => {
       <div className="container">
         <div className="bootcamp">
           <h2 className="m-heading">Add Bootcamp</h2>
-          <p>
-            Important: You must be affiliated with a bootcamp to add to
-            DevCamper
-          </p>
+          <p>Important: You must be affiliated with a bootcamp to add to DevCamper</p>
           <form onSubmit={handleSubmit}>
             <div className="form-grid">
               <div className="location">
@@ -142,10 +133,7 @@ const AddBootcamp = props => {
                   />
                 </div>
                 {currentBootcamp !== null ? (
-                  <p className="text-danger">
-                    *Please send an email to the admin to edit your Bootcamp
-                    Address
-                  </p>
+                  <p className="text-danger">*Please send an email to the admin to edit your Bootcamp Address</p>
                 ) : (
                   <div className="form-group">
                     <label htmlFor="address">Address</label>
@@ -162,23 +150,11 @@ const AddBootcamp = props => {
 
                 <div className="form-group">
                   <label htmlFor="phone">Phone Number</label>
-                  <input
-                    type="text"
-                    name="phone"
-                    value={phone}
-                    onChange={handleChange}
-                    placeholder="Phone"
-                  />
+                  <input type="text" name="phone" value={phone} onChange={handleChange} placeholder="Phone" />
                 </div>
                 <div className="form-group">
                   <label htmlFor="email">Email</label>
-                  <input
-                    type="email"
-                    name="email"
-                    value={email}
-                    onChange={handleChange}
-                    placeholder="Contact Email"
-                  />
+                  <input type="email" name="email" value={email} onChange={handleChange} placeholder="Contact Email" />
                 </div>
                 <div className="form-group">
                   <label htmlFor="website">Website</label>
@@ -209,58 +185,29 @@ const AddBootcamp = props => {
 
                 <div className="form-group">
                   <label htmlFor="careers">Careers</label>
-                  <select
-                    name="careers"
-                    onChange={handleMultipleSelect}
-                    value={careers}
-                    size="4"
-                    multiple
-                    required
-                  >
+                  <select name="careers" onChange={handleMultipleSelect} value={careers} size="4" multiple required>
                     <option disabled>Select all that apply</option>
                     <option value="Web Development">Web Development</option>
-                    <option value="Mobile Development">
-                      Mobile Development
-                    </option>
+                    <option value="Mobile Development">Mobile Development</option>
                     <option value="UI/UX">UI/UX</option>
                     <option value="Data Science">Data Science</option>
                     <option value="Business">Business</option>
                     <option value="Other">Other</option>
                   </select>
-                  <p>
-                    Hold down the shift button and click to select multiple
-                    items
-                  </p>
+                  <p>Hold down the shift button and click to select multiple items</p>
                 </div>
 
                 <div className="form-group">
-                  <input
-                    type="checkbox"
-                    checked={housing}
-                    name="housing"
-                    onChange={handleChange}
-                  />{" "}
-                  Housing <br />
-                  <input
-                    type="checkbox"
-                    checked={jobAssistance}
-                    onChange={handleChange}
-                    name="jobAssistance"
-                  />{" "}
-                  Job Assistance
+                  <input type="checkbox" checked={housing} name="housing" onChange={handleChange} /> Housing <br />
+                  <input type="checkbox" checked={jobAssistance} onChange={handleChange} name="jobAssistance" /> Job
+                  Assistance
                   <br />
-                  <input
-                    type="checkbox"
-                    checked={jobGuarantee}
-                    onChange={handleChange}
-                    name="jobGuarantee"
-                  />{" "}
-                  Job Guarantee
+                  <input type="checkbox" checked={jobGuarantee} onChange={handleChange} name="jobGuarantee" /> Job
+                  Guarantee
                   <br />
                 </div>
                 <p className="warning">
-                  *After you submit the bootcamp, you can add the specific
-                  courses offered via Manage Bootcamp.
+                  *After you submit the bootcamp, you can add the specific courses offered via Manage Bootcamp.
                 </p>
               </div>
             </div>

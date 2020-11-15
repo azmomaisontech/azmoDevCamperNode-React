@@ -1,10 +1,10 @@
 import React, { useContext, useEffect } from "react";
 import { Link, Redirect } from "react-router-dom";
-import BootcampContext from "../../context/bootcamp/bootcampContext";
+import { BootcampContext } from "../../context/bootcamp/BootcampState";
 import Review from "./Review";
 import Spinner from "../layout/Spinner";
 
-const ReadReviews = props => {
+const ReadReviews = (props) => {
   const bootcampContext = useContext(BootcampContext);
   const {
     loading,
@@ -12,7 +12,7 @@ const ReadReviews = props => {
     clearBootcamp,
     bootcampReviews,
     getBootcampReviews,
-    clearBootcampReviews
+    clearBootcampReviews,
   } = bootcampContext;
 
   useEffect(() => {
@@ -42,22 +42,14 @@ const ReadReviews = props => {
             </Link>
             <h2 className="m-heading">{name}</h2>
 
-            {bootcampReviews !== null &&
-              bootcampReviews.map(review => (
-                <Review review={review} key={review._id} />
-              ))}
+            {bootcampReviews !== null && bootcampReviews.map((review) => <Review review={review} key={review._id} />)}
           </div>
           <div className="review-image">
             <div className="rating">
-              <span className="badge badge-round badge-green">
-                {averageRating}
-              </span>
+              <span className="badge badge-round badge-green">{averageRating}</span>
               <h2 className="m-heading">Rating</h2>
             </div>
-            <Link
-              className="btn btn-primary btn-block"
-              to={`/bootcamps/${_id}/add-review`}
-            >
+            <Link className="btn btn-primary btn-block" to={`/bootcamps/${_id}/add-review`}>
               <i className="fas fa-pen"></i>
               Review This Bootcamp
             </Link>

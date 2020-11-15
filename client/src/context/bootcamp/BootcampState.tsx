@@ -1,7 +1,7 @@
 import React, { useReducer, createContext } from "react";
 import axios from "axios";
 import BootcampReducer from "./bootcampReducer";
-import { StateEnum, BootcampState, Props, BContextProps } from "../type";
+import { StateEnum, Props, BContextProps } from "../type";
 
 const initialState = {
   bootcamps: [],
@@ -18,7 +18,7 @@ const initialState = {
   pagination: {},
   loading: false,
   success: false,
-  error: {},
+  error: "",
 };
 
 const BootcampContext = createContext<Partial<BContextProps>>({});

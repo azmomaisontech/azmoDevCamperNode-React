@@ -98,7 +98,7 @@ export interface Review {
 export type BootcampState = {
   bootcamps: Bootcamp[];
   bootcamp: Partial<Bootcamp>;
-  currentBootcamp: Partial<Bootcamp>;
+  currentBootcamp: any;
   courses: Course[];
   currentCourse: Partial<Course>;
   reviews: Review[];
@@ -110,7 +110,7 @@ export type BootcampState = {
   pagination: {};
   loading: boolean;
   success: boolean;
-  error: {};
+  error: string;
 };
 
 export interface BContextProps extends BootcampState {
@@ -156,7 +156,7 @@ export type AlertStateProps = {
 };
 
 export interface AlertContextProps extends AlertStateProps {
-  setAlert: (msg: string, type: string, timeout: number) => void;
+  setAlert: (msg: string, type: string, timeout?: number) => void;
 }
 
 export type AuthStateProps = {

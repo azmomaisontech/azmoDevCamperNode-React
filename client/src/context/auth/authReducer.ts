@@ -1,31 +1,19 @@
-import {
-  REGISTER_USER,
-  LOGIN_USER,
-  CLEAR_ERROR,
-  SET_LOADING,
-  USER_LOADED,
-  AUTH_ERROR,
-  LOGOUT_USER,
-  UPDATE_USER,
-  UPDATE_PASSWORD,
-  UPDATE_ERROR,
-  CLEAR_SUCCESS
-} from "../type";
+import { StateEnum } from "../type";
 
 export default (state, action) => {
   switch (action.type) {
-    case REGISTER_USER:
-    case LOGIN_USER:
-    case UPDATE_PASSWORD:
+    case StateEnum.REGISTER_USER:
+    case StateEnum.LOGIN_USER:
+    case StateEnum.UPDATE_PASSWORD:
       localStorage.setItem("token", action.payload.token);
       return {
         ...state,
         token: action.payload.token,
         success: action.payload.success,
-        loading: false
+        loading: false,
       };
-    case AUTH_ERROR:
-    case LOGOUT_USER:
+    case StateEnum.AUTH_ERROR:
+    case StateEnum.LOGOUT_USER:
       localStorage.removeItem("token");
       return {
         ...state,
@@ -33,39 +21,39 @@ export default (state, action) => {
         token: null,
         isAuthenticated: null,
         loading: false,
-        user: null
+        user: null,
       };
-    case UPDATE_ERROR:
+    case StateEnum.UPDATE_ERROR:
       return {
         ...state,
         error: action.payload,
-        loading: false
+        loading: false,
       };
-    case USER_LOADED:
-    case UPDATE_USER:
+    case StateEnum.USER_LOADED:
+    case StateEnum.UPDATE_USER:
       return {
         ...state,
         user: action.payload.data,
         success: action.payload.success,
         isAuthenticated: true,
-        loading: false
+        loading: false,
       };
 
-    case CLEAR_ERROR:
+    case StateEnum.CLEAR_ERROR:
       return {
         ...state,
         error: null,
-        loading: false
+        loading: false,
       };
-    case CLEAR_SUCCESS:
+    case StateEnum.CLEAR_SUCCESS:
       return {
         ...state,
-        success: false
+        success: false,
       };
-    case SET_LOADING:
+    case StateEnum.SET_LOADING:
       return {
         ...state,
-        loading: true
+        loading: true,
       };
     default:
       return state;

@@ -1,9 +1,9 @@
 import React, { Fragment, useContext } from "react";
 import { Link, withRouter } from "react-router-dom";
-import AuthContext from "../../context/auth/authContext";
-import BootcampContext from "../../context/bootcamp/bootcampContext";
+import { AuthContext } from "../../context/auth/AuthState";
+import { BootcampContext } from "../../context/bootcamp/BootcampState";
 
-const MobileNavBar = withRouter(props => {
+const MobileNavBar = withRouter((props) => {
   const authContext = useContext(AuthContext);
   const bootcampContext = useContext(BootcampContext);
 
@@ -59,10 +59,7 @@ const MobileNavBar = withRouter(props => {
               <div className="nav-list">
                 <ul>
                   <li>
-                    <Link
-                      onClick={() => getBootcamps(1, 1000)}
-                      to="/manage-bootcamp"
-                    >
+                    <Link onClick={() => getBootcamps(1, 1000)} to="/manage-bootcamp">
                       Manage Bootcamp
                     </Link>
                   </li>

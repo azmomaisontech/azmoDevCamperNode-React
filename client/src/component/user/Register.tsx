@@ -1,15 +1,15 @@
 import React, { useState, useEffect, useContext } from "react";
 import { Link } from "react-router-dom";
-import AuthContext from "../../context/auth/authContext";
-import AlertContext from "../../context/alert/alertContext";
+import { AuthContext } from "../../context/auth/AuthState";
+import { AlertContext } from "../../context/alert/AlertState";
 
-const Register = props => {
+const Register = (props) => {
   const [user, setUser] = useState({
     name: "",
     email: "",
     password: "",
     password2: "",
-    role: "user"
+    role: "user",
   });
 
   const { name, email, password, password2, role } = user;
@@ -17,13 +17,7 @@ const Register = props => {
   const authContext = useContext(AuthContext);
   const alertContext = useContext(AlertContext);
 
-  const {
-    loading,
-    error,
-    clearError,
-    registerUser,
-    isAuthenticated
-  } = authContext;
+  const { loading, error, clearError, registerUser, isAuthenticated } = authContext;
   const { setAlert } = alertContext;
 
   //where to take the user after signing in
@@ -43,17 +37,16 @@ const Register = props => {
     [error, isAuthenticated, props.history]
   );
 
-  const handleChange = e => {
+  const handleChange = (e) => {
     setUser({
       ...user,
-      [e.target.name]: e.target.value
+      [e.target.name]: e.target.value,
     });
   };
 
-  const handleSubmit = e => {
+  const handleSubmit = (e) => {
     e.preventDefault();
-    if (password !== password2)
-      return setAlert("Passwords does not match", "danger");
+    if (password !== password2) return setAlert("Passwords does not match", "danger");
     registerUser(user);
   };
 
@@ -64,10 +57,7 @@ const Register = props => {
           <h2 className="m-heading">
             <i className="fas fa-user-plus"></i> Register
           </h2>
-          <p>
-            Register to list your bootcamp or rate, review and favorite
-            bootcamps
-          </p>
+          <p>Register to list your bootcamp or rate, review and favorite bootcamps</p>
           <div className="form-group">
             <label htmlFor="name">Name</label>
             <input
@@ -81,14 +71,7 @@ const Register = props => {
           </div>
           <div className="form-group">
             <label htmlFor="email">Email Address</label>
-            <input
-              type="email"
-              name="email"
-              value={email}
-              onChange={handleChange}
-              placeholder="Enter Email"
-              required
-            />
+            <input type="email" name="email" value={email} onChange={handleChange} placeholder="Enter Email" required />
           </div>
           <div className="form-group">
             <label htmlFor="password">Password</label>
@@ -126,14 +109,7 @@ const Register = props => {
           <div className="form-group role">
             <h2 className="s-heading">User Role</h2>
             <div>
-              <input
-                type="radio"
-                name="role"
-                value="user"
-                checked={role.user}
-                onChange={handleChange}
-                required
-              />
+              <input type="radio" name="role" value="user" checked={role.user} onChange={handleChange} required />
               <span> Regular User (Browse, Write reviews, etc) </span>
             </div>
 
@@ -150,8 +126,7 @@ const Register = props => {
             </div>
           </div>
           <p className="text-primary">
-            * You must be affiliated with the bootcamp in some way in order to
-            add it to DevCamper.
+            * You must be affiliated with the bootcamp in some way in order to add it to DevCamper.
           </p>
           <input
             type="submit"

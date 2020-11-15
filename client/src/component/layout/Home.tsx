@@ -1,6 +1,6 @@
 import React, { useContext, useState } from "react";
 import { Link, useHistory } from "react-router-dom";
-import BootcampContext from "../../context/bootcamp/bootcampContext";
+import { BootcampContext } from "../../context/bootcamp/BootcampState";
 
 const Home: React.FC = () => {
   const [distance, setDistance] = useState({

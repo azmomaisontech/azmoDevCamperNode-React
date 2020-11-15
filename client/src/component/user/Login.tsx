@@ -1,27 +1,21 @@
 import React, { useEffect, useContext, useState } from "react";
 import { Link } from "react-router-dom";
-import AuthContext from "../../context/auth/authContext";
-import AlertContext from "../../context/alert/alertContext";
+import { AuthContext } from "../../context/auth/AuthState";
+import { AlertContext } from "../../context/alert/AlertState";
 
-const Login = props => {
+const Login = (props) => {
   //Initialize state items with context
   const authContext = useContext(AuthContext);
   const alertContext = useContext(AlertContext);
 
-  const {
-    isAuthenticated,
-    loginUser,
-    clearError,
-    error,
-    loading
-  } = authContext;
+  const { isAuthenticated, loginUser, clearError, error, loading } = authContext;
 
   const { setAlert } = alertContext;
 
   //State for form control
   const [user, setUser] = useState({
     email: "",
-    password: ""
+    password: "",
   });
 
   const { email, password } = user;
@@ -42,11 +36,11 @@ const Login = props => {
     //eslint-disable-next-line
   }, [error, isAuthenticated, props.history]);
 
-  const handleChange = e => {
+  const handleChange = (e) => {
     setUser({ ...user, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = e => {
+  const handleSubmit = (e) => {
     e.preventDefault();
     loginUser(user);
   };
@@ -58,19 +52,10 @@ const Login = props => {
           <h2 className="m-heading">
             <i className="fas fa-sign-in-alt"></i> Login
           </h2>
-          <p>
-            Log in to list your bootcamp or rate, review and favorite bootcamps
-          </p>
+          <p>Log in to list your bootcamp or rate, review and favorite bootcamps</p>
           <div className="form-group">
             <label htmlFor="email">Email Address</label>
-            <input
-              type="email"
-              name="email"
-              value={email}
-              onChange={handleChange}
-              placeholder="Enter Email"
-              required
-            />
+            <input type="email" name="email" value={email} onChange={handleChange} placeholder="Enter Email" required />
           </div>
           <div className="form-group">
             <label htmlFor="password">Password</label>

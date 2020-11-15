@@ -1,9 +1,9 @@
 import React, { useState, useContext, useEffect } from "react";
 import { Link } from "react-router-dom";
-import BootcampContext from "../../context/bootcamp/bootcampContext";
-import AlertContext from "../../context/alert/alertContext";
+import { BootcampContext } from "../../context/bootcamp/BootcampState";
+import { AlertContext } from "../../context/alert/AlertState";
 
-const AddCourse = props => {
+const AddCourse = (props) => {
   //initialize bootcamp context and alert context
   const bootcampContext = useContext(BootcampContext);
   const alertContext = useContext(AlertContext);
@@ -16,7 +16,7 @@ const AddCourse = props => {
     clearSuccess,
     clearError,
     error,
-    success
+    success,
   } = bootcampContext;
 
   const { setAlert } = alertContext;
@@ -28,18 +28,11 @@ const AddCourse = props => {
     weeks: "",
     scholarhipsAvailable: false,
     tuition: "",
-    minimumSkill: ""
+    minimumSkill: "",
   });
 
   //Destructure items from course state
-  const {
-    title,
-    description,
-    weeks,
-    scholarhipsAvailable,
-    tuition,
-    minimumSkill
-  } = course;
+  const { title, description, weeks, scholarhipsAvailable, tuition, minimumSkill } = course;
 
   //for page control. To check if we are adding or updating courses.
   //When component mount, check if current course has items in it, and then populate the form
@@ -53,7 +46,7 @@ const AddCourse = props => {
         weeks: "",
         scholarhipsAvailable: false,
         tuition: "",
-        minimumSkill: ""
+        minimumSkill: "",
       });
     }
 
@@ -78,7 +71,7 @@ const AddCourse = props => {
   }, [currentCourse, success, error, props.history]);
 
   //for adding new course, form control
-  const handleChange = e => {
+  const handleChange = (e) => {
     const target = e.target;
     const value = target.type === "checkbox" ? target.checked : target.value;
     const name = target.name;
@@ -86,7 +79,7 @@ const AddCourse = props => {
   };
 
   // To submit form for both new and updated course
-  const handleSubmit = e => {
+  const handleSubmit = (e) => {
     e.preventDefault();
 
     if (currentCourse === null) {
@@ -112,14 +105,7 @@ const AddCourse = props => {
           <form onSubmit={handleSubmit}>
             <div className="form-group">
               <label htmlFor="title">Course Title</label>
-              <input
-                type="text"
-                name="title"
-                value={title}
-                onChange={handleChange}
-                placeholder="Title"
-                required
-              />
+              <input type="text" name="title" value={title} onChange={handleChange} placeholder="Title" required />
             </div>
             <div className="form-group">
               <label htmlFor="weeks">Duration</label>
@@ -145,12 +131,7 @@ const AddCourse = props => {
             </div>
             <div className="form-group">
               <label htmlFor="minimumSkill">Minimum Skill Required</label>
-              <select
-                name="minimumSkill"
-                value={minimumSkill}
-                onChange={handleChange}
-                required
-              >
+              <select name="minimumSkill" value={minimumSkill} onChange={handleChange} required>
                 <option> Choose a level</option>
                 <option value="beginner">Beginner </option>
                 <option value="intermediate">Intermediate</option>

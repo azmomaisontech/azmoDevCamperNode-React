@@ -22,14 +22,14 @@ import { BootcampState } from "./context/bootcamp/BootcampState";
 import PrivateRoute from "./util/PrivateRoute";
 import NotFound from "./component/layout/NotFound";
 import "./App.css";
-import AuthContext from "./context/auth/authContext";
+import { AuthContext } from "./context/auth/AuthState";
 
 const App = () => {
   const authContext = useContext(AuthContext);
   const { isAuthenticated, loadUser } = authContext;
 
   if (!isAuthenticated && localStorage.token) {
-    loadUser();
+    if (loadUser) loadUser();
   }
 
   return (

@@ -1,6 +1,6 @@
 import React, { useState, useContext, useEffect } from "react";
-import BootcampContext from "../../context/bootcamp/bootcampContext";
-import AlertContext from "../../context/alert/alertContext";
+import { BootcampContext } from "../../context/bootcamp/BootcampState";
+import { AlertContext } from "../../context/alert/AlertState";
 import PropTypes from "prop-types";
 
 const FileUpload = ({ bootcamp }) => {
@@ -12,16 +12,7 @@ const FileUpload = ({ bootcamp }) => {
   const alertContext = useContext(AlertContext);
 
   //destructure items from the bootcamp context state
-  const {
-    loading,
-    uploadImage,
-    image,
-    error,
-    clearError,
-    success,
-    clearSuccess,
-    getBootcamps
-  } = bootcampContext;
+  const { loading, uploadImage, image, error, clearError, success, clearSuccess, getBootcamps } = bootcampContext;
 
   //destructure items from the alert context state
   const { setAlert } = alertContext;
@@ -42,13 +33,13 @@ const FileUpload = ({ bootcamp }) => {
   }, [error, image, success]);
 
   //When the form is submitted
-  const handleSubmit = e => {
+  const handleSubmit = (e) => {
     e.preventDefault();
     uploadImage(file, bootcamp._id);
     e.target.value = "";
   };
 
-  const handleChange = e => {
+  const handleChange = (e) => {
     setFile(e.target.files[0]);
   };
 
@@ -66,7 +57,7 @@ const FileUpload = ({ bootcamp }) => {
 };
 
 FileUpload.propTypes = {
-  bootcamp: PropTypes.object.isRequired
+  bootcamp: PropTypes.object.isRequired,
 };
 
 export default FileUpload;

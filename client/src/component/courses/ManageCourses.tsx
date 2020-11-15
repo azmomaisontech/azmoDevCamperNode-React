@@ -1,21 +1,14 @@
 import React, { useContext, useEffect } from "react";
 import { Link } from "react-router-dom";
 import BootcampItem from "../bootcamp/BootcampItem";
-import BootcampContext from "../../context/bootcamp/bootcampContext";
-import AlertContext from "../../context/alert/alertContext";
+import { BootcampContext } from "../../context/bootcamp/BootcampState";
+import { AlertContext } from "../../context/alert/AlertState";
 
 const ManageCourses = () => {
   const bootcampContext = useContext(BootcampContext);
   const alertContext = useContext(AlertContext);
 
-  const {
-    currentBootcamp,
-    addCurrentCourse,
-    courses,
-    error,
-    clearError,
-    deleteCourse
-  } = bootcampContext;
+  const { currentBootcamp, addCurrentCourse, courses, error, clearError, deleteCourse } = bootcampContext;
   const { setAlert } = alertContext;
 
   useEffect(() => {
@@ -41,10 +34,7 @@ const ManageCourses = () => {
           <h2 className="m-heading">Manage Courses</h2>
           <BootcampItem bootcamp={currentBootcamp} />
 
-          <Link
-            className="btn btn-block btn-primary"
-            to={`/bootcamps/${currentBootcamp._id}/add-course`}
-          >
+          <Link className="btn btn-block btn-primary" to={`/bootcamps/${currentBootcamp._id}/add-course`}>
             Add Bootcamp Courses
           </Link>
           {courses && courses.length > 0 && (
@@ -56,7 +46,7 @@ const ManageCourses = () => {
                 </tr>
               </thead>
               <tbody>
-                {courses.map(course => (
+                {courses.map((course) => (
                   <tr key={course._id}>
                     <td>{course.title}</td>
                     <td>
@@ -67,10 +57,7 @@ const ManageCourses = () => {
                       >
                         <i className="fas fa-pen"></i>
                       </Link>
-                      <button
-                        onClick={() => deleteCourse(course._id)}
-                        className="btn btn-sm btn-danger"
-                      >
+                      <button onClick={() => deleteCourse(course._id)} className="btn btn-sm btn-danger">
                         <i className="fas fa-times"></i>
                       </button>
                     </td>

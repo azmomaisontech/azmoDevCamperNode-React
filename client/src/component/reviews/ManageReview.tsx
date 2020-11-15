@@ -1,8 +1,8 @@
 import React, { useContext, useEffect } from "react";
 import { Link } from "react-router-dom";
-import BootcampContext from "../../context/bootcamp/bootcampContext";
-import AlertContext from "../../context/alert/alertContext";
-import AuthContext from "../../context/auth/authContext";
+import { BootcampContext } from "../../context/bootcamp/BootcampState";
+import { AlertContext } from "../../context/alert/AlertState";
+import { AuthContext } from "../../context/auth/AuthState";
 import Spinner from "../layout/Spinner";
 
 const ManageReview = () => {

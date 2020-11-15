@@ -1,7 +1,7 @@
 import React, { useState, useContext, useEffect } from "react";
 import { Link } from "react-router-dom";
-import AuthContext from "../../context/auth/authContext";
-import AlertContext from "../../context/alert/alertContext";
+import { AuthContext } from "../../context/auth/AuthState";
+import { AlertContext } from "../../context/alert/AlertState";
 
 const ManageAccount = () => {
   //Initialize Context
@@ -15,7 +15,7 @@ const ManageAccount = () => {
   //Form controller
   const [userInfo, setUser] = useState({
     name: "",
-    email: ""
+    email: "",
   });
 
   useEffect(() => {
@@ -31,10 +31,10 @@ const ManageAccount = () => {
     //eslint-disable-next-line
   }, [success, error]);
 
-  const handleChange = e => {
+  const handleChange = (e) => {
     setUser({ ...userInfo, [e.target.name]: e.target.value });
   };
-  const handleSubmit = e => {
+  const handleSubmit = (e) => {
     e.preventDefault();
     updateUser(userInfo);
   };
@@ -48,36 +48,17 @@ const ManageAccount = () => {
           <h2 className="m-heading">Manage Account</h2>
           <div className="form-group">
             <label htmlFor="name">Name</label>
-            <input
-              type="text"
-              name="name"
-              value={name}
-              onChange={handleChange}
-              placeholder="Enter Name"
-              required
-            />
+            <input type="text" name="name" value={name} onChange={handleChange} placeholder="Enter Name" required />
           </div>
           <div className="form-group">
             <label htmlFor="email">Email Address</label>
-            <input
-              type="email"
-              name="email"
-              value={email}
-              onChange={handleChange}
-              placeholder="Enter Email"
-              required
-            />
+            <input type="email" name="email" value={email} onChange={handleChange} placeholder="Enter Email" required />
             <p className="text-danger">
-              *Changing your email will mean you have to login with the new
-              email address provided
+              *Changing your email will mean you have to login with the new email address provided
             </p>
           </div>
           <div className="submit-buttons">
-            <input
-              type="submit"
-              className="btn btn-green btn-medium"
-              value="Save"
-            />
+            <input type="submit" className="btn btn-green btn-medium" value="Save" />
             <Link to="/update-password" className="btn btn-gray btn-medium">
               Update Password
             </Link>

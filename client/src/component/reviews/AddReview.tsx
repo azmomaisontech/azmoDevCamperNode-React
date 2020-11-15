@@ -1,9 +1,9 @@
 import React, { useState, useContext, useEffect } from "react";
 import { Link } from "react-router-dom";
-import BootcampContext from "../../context/bootcamp/bootcampContext";
-import AlertContext from "../../context/alert/alertContext";
+import { BootcampContext } from "../../context/bootcamp/BootcampState";
+import { AlertContext } from "../../context/alert/AlertState";
 
-const AddReview = props => {
+const AddReview = (props) => {
   //initialize bootcamp and alert context
   const bootcampContext = useContext(BootcampContext);
   const alertContext = useContext(AlertContext);
@@ -21,14 +21,14 @@ const AddReview = props => {
     clearSuccess,
     clearError,
     error,
-    loading
+    loading,
   } = bootcampContext;
 
   //Local state for form control
   const [review, setReview] = useState({
     title: "",
     text: "",
-    ratings: ""
+    ratings: "",
   });
 
   //Dynamically change the form to an edit form if a user
@@ -40,7 +40,7 @@ const AddReview = props => {
       setReview({
         title: "",
         text: "",
-        ratings: ""
+        ratings: "",
       });
     }
 
@@ -71,11 +71,11 @@ const AddReview = props => {
     //eslint-disable-next-line
   }, [error, currentReview, success, props.history]);
 
-  const handleChange = e => {
+  const handleChange = (e) => {
     setReview({ ...review, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = e => {
+  const handleSubmit = (e) => {
     e.preventDefault();
     if (currentReview !== null) {
       updateReview(review, props.match.params.reviewId);
@@ -96,9 +96,7 @@ const AddReview = props => {
           </Link>
 
           <h2 className="s-heading text-primary">Write A Review</h2>
-          <p>
-            You must have attended and completed this bootcamp to write a review{" "}
-          </p>
+          <p>You must have attended and completed this bootcamp to write a review </p>
           <form onSubmit={handleSubmit}>
             <select value={ratings} onChange={handleChange} name="ratings">
               <option>Rating</option>
@@ -112,13 +110,7 @@ const AddReview = props => {
               <option value="9">9</option>
               <option value="10">10</option>
             </select>
-            <input
-              type="text"
-              value={title}
-              onChange={handleChange}
-              placeholder="Review Title"
-              name="title"
-            />
+            <input type="text" value={title} onChange={handleChange} placeholder="Review Title" name="title" />
             <textarea
               name="text"
               value={text}
@@ -127,11 +119,7 @@ const AddReview = props => {
               rows="15"
               placeholder="Your review"
             ></textarea>
-            <input
-              type="submit"
-              value={loading ? "Loading...." : "Submit Review"}
-              className="btn btn-dark btn-block"
-            />
+            <input type="submit" value={loading ? "Loading...." : "Submit Review"} className="btn btn-dark btn-block" />
           </form>
         </div>
       </div>

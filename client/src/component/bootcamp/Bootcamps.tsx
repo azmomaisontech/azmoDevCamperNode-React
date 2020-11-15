@@ -1,26 +1,19 @@
 import React, { Fragment, useContext, useEffect, useState } from "react";
 import BootcampItem from "./BootcampItem";
-import BootcampContext from "../../context/bootcamp/bootcampContext";
+import { BootcampContext } from "../../context/bootcamp/BootcampState";
 import Spinner from "../layout/Spinner";
 import { Link } from "react-router-dom";
 import queryString from "query-string";
 
-const Bootcamps = props => {
+const Bootcamps = (props) => {
   const [filter, setFilter] = useState({
     budget: 100000,
-    rating: 1
+    rating: 1,
   });
 
   //To initialize context
   const bootcampContext = useContext(BootcampContext);
-  const {
-    bootcamps,
-    selectBootcamp,
-    clearBootcamps,
-    getBootcamps,
-    pagination,
-    loading
-  } = bootcampContext;
+  const { bootcamps, selectBootcamp, clearBootcamps, getBootcamps, pagination, loading } = bootcampContext;
 
   //Using query string to get the value of the query parament passed when the user clicks the next page
   useEffect(() => {
@@ -34,12 +27,12 @@ const Bootcamps = props => {
     //eslint-disable-next-line
   }, [props.location.search]);
 
-  const handleChange = e => {
+  const handleChange = (e) => {
     setFilter({ ...filter, [e.target.name]: e.target.value });
   };
 
   //To filter the bootcamps
-  const handleSubmit = e => {
+  const handleSubmit = (e) => {
     e.preventDefault();
     selectBootcamp(rating, budget);
   };
@@ -87,11 +80,7 @@ const Bootcamps = props => {
                   value="Filter Bootcamps"
                 />
               </form>
-              <Link
-                className="btn btn-block btn-green standalone"
-                onClick={() => getBootcamps()}
-                to="/bootcamps"
-              >
+              <Link className="btn btn-block btn-green standalone" onClick={() => getBootcamps()} to="/bootcamps">
                 Browse All Bootcamps
               </Link>
             </div>
@@ -99,42 +88,32 @@ const Bootcamps = props => {
               {bootcamps.length === 0 && !loading ? (
                 <h3>No Bootcamps</h3>
               ) : bootcamps.length !== 0 && !loading ? (
-                bootcamps.map(bootcamp => (
-                  <BootcampItem key={bootcamp._id} bootcamp={bootcamp} />
-                ))
+                bootcamps.map((bootcamp) => <BootcampItem key={bootcamp._id} bootcamp={bootcamp} />)
               ) : (
                 <Spinner />
               )}
-              {pagination &&
-                Object.keys(pagination).length !== 0 &&
-                pagination.constructor === Object && (
-                  <div>
-                    <ul className="pagination">
-                      <ul>
-                        {pagination.prev && (
-                          <li>
-                            <Link
-                              className="btn btn-block btn-primary"
-                              to={`/bootcamps?page=${pagination.prev.page}`}
-                            >
-                              Previous
-                            </Link>
-                          </li>
-                        )}
-                        {pagination.next && (
-                          <li>
-                            <Link
-                              className="btn btn-block btn-primary"
-                              to={`/bootcamps?page=${pagination.next.page}`}
-                            >
-                              Next
-                            </Link>
-                          </li>
-                        )}
-                      </ul>
+              {pagination && Object.keys(pagination).length !== 0 && pagination.constructor === Object && (
+                <div>
+                  <ul className="pagination">
+                    <ul>
+                      {pagination.prev && (
+                        <li>
+                          <Link className="btn btn-block btn-primary" to={`/bootcamps?page=${pagination.prev.page}`}>
+                            Previous
+                          </Link>
+                        </li>
+                      )}
+                      {pagination.next && (
+                        <li>
+                          <Link className="btn btn-block btn-primary" to={`/bootcamps?page=${pagination.next.page}`}>
+                            Next
+                          </Link>
+                        </li>
+                      )}
                     </ul>
-                  </div>
-                )}
+                  </ul>
+                </div>
+              )}
             </div>
           </div>
         </div>
