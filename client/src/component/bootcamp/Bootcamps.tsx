@@ -19,7 +19,7 @@ const Bootcamps: React.FC = () => {
   //Using query string to get the value of the query parament passed when the user clicks the next page
   useEffect(() => {
     //Handle pagination
-    const value: { page?: string } = queryString.parse(location.search);
+    const value: { page?: number } = queryString.parse(location.search);
     if (getBootcamps) getBootcamps(value.page);
 
     return () => {

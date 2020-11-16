@@ -63,7 +63,7 @@ export interface Bootcamp {
   jobAssistance: boolean;
   jobGuarantee: boolean;
   acceptGi: true;
-  user: User;
+  user: string;
   name: string;
   description: string;
   website: string;
@@ -125,7 +125,7 @@ export type BootcampState = {
 };
 
 export interface BContextProps extends BootcampState {
-  getBootcamps: (page?: string) => void;
+  getBootcamps: (page?: number, limit?: number) => void;
   getBootcamp: (id: string) => void;
   addBootcamp: (formData: Partial<Bootcamp>) => void;
   updateBootcamp: (formData: Partial<Bootcamp>, bootcampId: string) => void;

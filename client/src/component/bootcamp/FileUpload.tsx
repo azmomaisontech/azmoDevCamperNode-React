@@ -1,11 +1,15 @@
 import React, { useState, useContext, useEffect } from "react";
 import { BootcampContext } from "../../context/bootcamp/BootcampState";
 import { AlertContext } from "../../context/alert/AlertState";
-import PropTypes from "prop-types";
+import { Bootcamp } from "../../context/type";
 
-const FileUpload = ({ bootcamp }) => {
+interface Props {
+  bootcamp: Partial<Bootcamp>;
+}
+
+const FileUpload: React.FC<Props> = ({ bootcamp }) => {
   //Use State method for file upload
-  const [file, setFile] = useState(null);
+  const [file, setFile] = useState<{} | null>({});
 
   //initialize context
   const bootcampContext = useContext(BootcampContext);
@@ -20,27 +24,26 @@ const FileUpload = ({ bootcamp }) => {
   //When component update
   useEffect(() => {
     if (error !== null) {
-      setAlert(error, "danger");
+      if (setAlert && error) setAlert(error, "danger");
     } else if (success) {
-      setAlert("Upload Successful", "success");
-      getBootcamps(1, 1000);
+      if (setAlert) setAlert("Upload Successful", "success");
+      if (getBootcamps) getBootcamps(1, 1000);
     }
 
-    clearSuccess();
-    clearError();
+    if (clearSuccess) clearSuccess();
+    if (clearError) clearError();
 
     //eslint-disable-next-line
   }, [error, image, success]);
 
   //When the form is submitted
-  const handleSubmit = (e) => {
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    uploadImage(file, bootcamp._id);
-    e.target.value = "";
+    if (uploadImage && bootcamp._id) uploadImage(file, bootcamp._id);
   };
 
-  const handleChange = (e) => {
-    setFile(e.target.files[0]);
+  const handleChange = (e: React.FormEvent<HTMLInputElement>) => {
+    setFile(e.currentTarget.files);
   };
 
   return (
@@ -54,10 +57,6 @@ const FileUpload = ({ bootcamp }) => {
       />
     </form>
   );
-};
-
-FileUpload.propTypes = {
-  bootcamp: PropTypes.object.isRequired,
 };
 
 export default FileUpload;
