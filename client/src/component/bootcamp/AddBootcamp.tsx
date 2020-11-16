@@ -4,6 +4,19 @@ import { BootcampContext } from "../../context/bootcamp/BootcampState";
 import { AlertContext } from "../../context/alert/AlertState";
 import isEmpty from "../../util/isEmpty";
 
+interface Item {
+  name: string;
+  address: string;
+  phone: string;
+  email: string;
+  website: string;
+  description: string;
+  careers: string[];
+  housing: boolean;
+  jobAssistance: boolean;
+  jobGuarantee: boolean;
+}
+
 const AddBootcamp: React.FC = (props) => {
   const history = useHistory();
   //Initialize context
@@ -26,7 +39,7 @@ const AddBootcamp: React.FC = (props) => {
   const { setAlert } = alertContext;
 
   //use State for form control
-  const [bootcamp, setBootcamp] = useState({
+  const [bootcamp, setBootcamp] = useState<Item>({
     name: "",
     address: "",
     phone: "",
@@ -87,6 +100,13 @@ const AddBootcamp: React.FC = (props) => {
     setBootcamp({ ...bootcamp, [name]: value });
   };
 
+  const handleTextAreaChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    const target = e.target;
+    const value = target.value;
+    const name = target.name;
+    setBootcamp({ ...bootcamp, [name]: value });
+  };
+
   const handleMultipleSelect = (e: any) => {
     var options = e.target.options;
     var value = [];
@@ -100,13 +120,13 @@ const AddBootcamp: React.FC = (props) => {
   };
 
   //To submit form
-  const handleSubmit = (e) => {
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     if (currentBootcamp === null) {
-      addBootcamp(bootcamp);
+      if (addBootcamp) addBootcamp(bootcamp);
     } else {
-      updateBootcamp(bootcamp, currentBootcamp._id);
+      if (updateBootcamp) updateBootcamp(bootcamp, currentBootcamp._id);
     }
   };
 
@@ -173,10 +193,10 @@ const AddBootcamp: React.FC = (props) => {
                   <label htmlFor="description">Description</label>
                   <textarea
                     name="description"
-                    cols="30"
-                    rows="10"
+                    cols={30}
+                    rows={10}
                     value={description}
-                    onChange={handleChange}
+                    onChange={handleTextAreaChange}
                     placeholder="Description (What you offer)"
                     required
                   ></textarea>
@@ -185,7 +205,7 @@ const AddBootcamp: React.FC = (props) => {
 
                 <div className="form-group">
                   <label htmlFor="careers">Careers</label>
-                  <select name="careers" onChange={handleMultipleSelect} value={careers} size="4" multiple required>
+                  <select name="careers" onChange={handleMultipleSelect} value={careers} size={4} multiple required>
                     <option disabled>Select all that apply</option>
                     <option value="Web Development">Web Development</option>
                     <option value="Mobile Development">Mobile Development</option>

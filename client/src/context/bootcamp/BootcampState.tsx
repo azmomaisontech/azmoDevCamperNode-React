@@ -1,7 +1,7 @@
 import React, { useReducer, createContext } from "react";
 import axios from "axios";
 import BootcampReducer from "./bootcampReducer";
-import { StateEnum, Props, BContextProps } from "../type";
+import { StateEnum, Props, BContextProps, Bootcamp } from "../type";
 
 const initialState = {
   bootcamps: [],
@@ -66,7 +66,7 @@ const BootcampState: React.FC<Props> = ({ children }) => {
   };
 
   //Create a new bootcamp
-  const addBootcamp = async (formData: any) => {
+  const addBootcamp = async (formData: Partial<Bootcamp>) => {
     setLoading();
     const config = {
       headers: {
