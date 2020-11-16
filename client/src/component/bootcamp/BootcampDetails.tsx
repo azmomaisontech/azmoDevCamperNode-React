@@ -1,10 +1,12 @@
 import React, { useEffect, useContext } from "react";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { BootcampContext } from "../../context/bootcamp/BootcampState";
 import Spinner from "../layout/Spinner";
 import Course from "../courses/Course";
+import isEmpty from "../../util/isEmpty";
 
-const BootcampDetails = (props) => {
+const BootcampDetails: React.FC = () => {
+  const { id } = useParams<{ id: string }>();
   const bootcampContext = useContext(BootcampContext);
   const {
     getBootcamp,
@@ -17,12 +19,11 @@ const BootcampDetails = (props) => {
   } = bootcampContext;
 
   useEffect(() => {
-    getBootcamp(props.match.params.id);
-    getBootcampReviews(props.match.params.id);
-
+    if (getBootcamp) getBootcamp(id);
+    if (getBootcampReviews) getBootcampReviews(id);
     return () => {
-      clearReviews();
-      clearBootcampReviews();
+      if (clearReviews) clearReviews();
+      if (clearBootcampReviews) clearBootcampReviews();
     };
 
     //eslint-disable-next-line
@@ -31,7 +32,7 @@ const BootcampDetails = (props) => {
   return (
     <main id="bootcamp-display">
       <div className="container">
-        {bootcamp !== null && !loading ? (
+        {bootcamp && !isEmpty(bootcamp) && !loading ? (
           <div className="bootcamp-grid">
             <div className="bootcamp-content">
               <h2 className="m-heading">{bootcamp.name}</h2>
@@ -52,7 +53,7 @@ const BootcampDetails = (props) => {
                 <span className="badge badge-round badge-primary">{bootcamp.averageRating}</span>
                 <h2 className="m-heading">Rating</h2>
               </div>
-              {bootcampReviews !== null && bootcampReviews.length > 0 && (
+              {bootcampReviews && bootcampReviews.length > 0 && (
                 <Link className="btn btn-dark btn-block" to={`/bootcamps/${bootcamp._id}/reviews`}>
                   <i className="fas fa-comments"></i>
                   Read Reviews

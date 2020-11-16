@@ -57,7 +57,7 @@ export interface Bootcamp {
   careers: string[];
   photo: string;
   housing: boolean;
-  jobAssitance: boolean;
+  jobAssistance: boolean;
   jobGuarantee: boolean;
   acceptGi: true;
   user: User;
@@ -70,6 +70,7 @@ export interface Bootcamp {
   slug: string;
   averageCost: number;
   averageRating: number;
+  courses: Course[];
 }
 
 export interface Course {
@@ -96,7 +97,7 @@ export interface Review {
 }
 
 export type BootcampState = {
-  bootcamps: Bootcamp[];
+  bootcamps: Partial<Bootcamp>[];
   bootcamp: Partial<Bootcamp>;
   currentBootcamp: any;
   courses: Course[];
@@ -105,7 +106,7 @@ export type BootcampState = {
   bootcampReviews: Review[];
   currentReview: Partial<Review>;
   image: string;
-  filtered: Bootcamp[];
+  filtered: Partial<Bootcamp>[];
   count: number;
   pagination: {};
   loading: boolean;

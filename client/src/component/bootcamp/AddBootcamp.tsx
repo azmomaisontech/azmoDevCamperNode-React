@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from "react";
-import { useHistory, useLocation } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import { BootcampContext } from "../../context/bootcamp/BootcampState";
 import { AlertContext } from "../../context/alert/AlertState";
 import isEmpty from "../../util/isEmpty";
@@ -17,7 +17,7 @@ interface Item {
   jobGuarantee: boolean;
 }
 
-const AddBootcamp: React.FC = (props) => {
+const AddBootcamp: React.FC = () => {
   const history = useHistory();
   //Initialize context
   const bootcampContext = useContext(BootcampContext);
