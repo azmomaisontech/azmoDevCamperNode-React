@@ -1,8 +1,12 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import PropTypes from "prop-types";
+import { Bootcamp } from "../../context/type";
 
-const BootcampItem = ({ bootcamp }) => {
+interface Props {
+  bootcamp: Partial<Bootcamp>;
+}
+
+const BootcampItem: React.FC<Props> = ({ bootcamp }) => {
   const { _id, name, location, careers, averageRating, photo } = bootcamp;
   return (
     <div className="bootcamp">
@@ -17,22 +21,14 @@ const BootcampItem = ({ bootcamp }) => {
             </Link>
           </h2>
           <span className="badge badge-dark">
-            {location.city}, {location.state}
+            {location && location.city}, {location && location.state}
           </span>
-          <p>{careers.toString()}</p>
+          <p>{careers && careers.toString()}</p>
         </div>
-        <div className="float-right">
-          {averageRating && (
-            <span className="badge badge-green">{averageRating}</span>
-          )}
-        </div>
+        <div className="float-right">{averageRating && <span className="badge badge-green">{averageRating}</span>}</div>
       </div>
     </div>
   );
-};
-
-BootcampItem.propTypes = {
-  bootcamp: PropTypes.object.isRequired
 };
 
 export default BootcampItem;

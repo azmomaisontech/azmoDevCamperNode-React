@@ -1,7 +1,7 @@
 import React, { useReducer, createContext } from "react";
 import axios from "axios";
 import BootcampReducer from "./bootcampReducer";
-import { StateEnum, Props, BContextProps, Bootcamp } from "../type";
+import { StateEnum, Props, BContextProps, Bootcamp, Course, Review } from "../type";
 
 const initialState = {
   bootcamps: [],
@@ -89,7 +89,7 @@ const BootcampState: React.FC<Props> = ({ children }) => {
   };
 
   //Update a bootcamp
-  const updateBootcamp = async (formData: any, bootcampId: any) => {
+  const updateBootcamp = async (formData: Partial<Bootcamp>, bootcampId: string) => {
     setLoading();
     const config = {
       headers: {
@@ -113,7 +113,7 @@ const BootcampState: React.FC<Props> = ({ children }) => {
   };
 
   //Upload bootcamp image
-  const uploadImage = async (file: any, bootcampId: any) => {
+  const uploadImage = async (file: any, bootcampId: string) => {
     setLoading();
     const formData = new FormData();
     formData.append("file", file);
@@ -156,7 +156,7 @@ const BootcampState: React.FC<Props> = ({ children }) => {
     }
   };
 
-  const selectBootcamp = async (averageRating: any, averageCost: any) => {
+  const selectBootcamp = async (averageRating: number, averageCost: number) => {
     setLoading();
     try {
       const res = await axios.get(
@@ -182,7 +182,7 @@ const BootcampState: React.FC<Props> = ({ children }) => {
   };
 
   //Delete bootcamp
-  const deleteBootcamp = async (bootcampId: any) => {
+  const deleteBootcamp = async (bootcampId: string) => {
     setLoading();
     try {
       await axios.delete(`/api/v1/bootcamps/${bootcampId}`);
@@ -199,7 +199,7 @@ const BootcampState: React.FC<Props> = ({ children }) => {
   };
 
   //Set personal bootcamp to currentbootcamp state
-  const setCurrent = (bootcamp: any) => {
+  const setCurrent = (bootcamp: Partial<Bootcamp>) => {
     dispatch({
       type: StateEnum.SET_CURRENT,
       payload: bootcamp,
@@ -251,7 +251,7 @@ const BootcampState: React.FC<Props> = ({ children }) => {
   // Courses
 
   //Add a new course associated with a bootcamp
-  const addCourse = async (formData: any, bootcampId: any) => {
+  const addCourse = async (formData: Partial<Bootcamp>, bootcampId: string) => {
     setLoading();
     const config = {
       headers: {
@@ -273,7 +273,7 @@ const BootcampState: React.FC<Props> = ({ children }) => {
   };
 
   //Update a course
-  const updateCourse = async (formData: any, courseId: any) => {
+  const updateCourse = async (formData: Partial<Course>, courseId: string) => {
     setLoading();
     const config = {
       headers: {
@@ -296,7 +296,7 @@ const BootcampState: React.FC<Props> = ({ children }) => {
   };
 
   //Delete a course
-  const deleteCourse = async (courseId: any) => {
+  const deleteCourse = async (courseId: string) => {
     setLoading();
     try {
       await axios.delete(`/api/v1/courses/${courseId}`);
@@ -313,7 +313,7 @@ const BootcampState: React.FC<Props> = ({ children }) => {
   };
 
   //Add current course to the currentCourse state, to dynamically edit or delete
-  const addCurrentCourse = (course: any) => {
+  const addCurrentCourse = (course: Partial<Course>) => {
     dispatch({
       type: StateEnum.CURRENT_COURSE,
       payload: course,
@@ -353,7 +353,7 @@ const BootcampState: React.FC<Props> = ({ children }) => {
   };
 
   //Get all reviews for a particular bootcamp
-  const getBootcampReviews = async (bootcampId: any) => {
+  const getBootcampReviews = async (bootcampId: string) => {
     setLoading();
     try {
       const res = await axios.get(`/api/v1/bootcamps/${bootcampId}/reviews`);
@@ -376,7 +376,7 @@ const BootcampState: React.FC<Props> = ({ children }) => {
   };
 
   //add review
-  const addReview = async (formData: any, bootcampId: any) => {
+  const addReview = async (formData: Partial<Review>, bootcampId: string) => {
     setLoading();
     const config = {
       headers: {
@@ -399,7 +399,7 @@ const BootcampState: React.FC<Props> = ({ children }) => {
   };
 
   //Update reviews
-  const updateReview = async (formData: any, reviewId: any) => {
+  const updateReview = async (formData: Partial<Review>, reviewId: string) => {
     setLoading();
     const config = {
       headers: {
@@ -421,7 +421,7 @@ const BootcampState: React.FC<Props> = ({ children }) => {
   };
 
   //Delete reviews
-  const deleteReviews = async (reviewId: any) => {
+  const deleteReviews = async (reviewId: string) => {
     setLoading();
     try {
       await axios.delete(`/api/v1/reviews/${reviewId}`);
@@ -438,7 +438,7 @@ const BootcampState: React.FC<Props> = ({ children }) => {
   };
 
   //Add current review to the current review state, to dynamically edit
-  const addCurrentReview = (review: any) => {
+  const addCurrentReview = (review: Partial<Review>) => {
     dispatch({
       type: StateEnum.SET_CURRENTREVIEW,
       payload: review,

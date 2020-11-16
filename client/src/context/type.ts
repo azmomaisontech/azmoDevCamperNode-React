@@ -53,7 +53,10 @@ export interface User {
 
 export interface Bootcamp {
   _id: string;
-  location: {};
+  location: {
+    city: string;
+    state: string;
+  };
   careers: string[];
   photo: string;
   housing: boolean;
@@ -108,20 +111,27 @@ export type BootcampState = {
   image: string;
   filtered: Partial<Bootcamp>[];
   count: number;
-  pagination: {};
+  pagination: {
+    prev: {
+      page: string;
+    };
+    next: {
+      page: string;
+    };
+  };
   loading: boolean;
   success: boolean;
   error: string;
 };
 
 export interface BContextProps extends BootcampState {
-  getBootcamps: () => void;
+  getBootcamps: (page?: string) => void;
   getBootcamp: (id: string) => void;
   addBootcamp: (formData: Partial<Bootcamp>) => void;
   updateBootcamp: (formData: Partial<Bootcamp>, bootcampId: string) => void;
   deleteBootcamp: (bootcampId: string) => void;
   filterBootcamp: (zipcode: any, searchRad: any) => void;
-  selectBootcamp: (averageRating: any, averageCost: any) => void;
+  selectBootcamp: (averageRating: number, averageCost: number) => void;
   uploadImage: (file: any, bootcampId: string) => void;
   clearFiltered: () => void;
   setCurrent: (bootcamp: Partial<Bootcamp>) => void;
