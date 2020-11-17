@@ -12,10 +12,10 @@ const ManageCourses = () => {
   const { setAlert } = alertContext;
 
   useEffect(() => {
-    if (error !== null) {
+    if (error && setAlert) {
       setAlert(error, "danger");
     }
-    clearError();
+    if (clearError) clearError();
 
     //eslint-disable-next-line
   }, [error]);
@@ -46,23 +46,25 @@ const ManageCourses = () => {
                 </tr>
               </thead>
               <tbody>
-                {courses.map((course) => (
-                  <tr key={course._id}>
-                    <td>{course.title}</td>
-                    <td>
-                      <Link
-                        onClick={() => addCurrentCourse(course)}
-                        className="btn btn-sm btn-gray"
-                        to={`edit-course/${course._id}`}
-                      >
-                        <i className="fas fa-pen"></i>
-                      </Link>
-                      <button onClick={() => deleteCourse(course._id)} className="btn btn-sm btn-danger">
-                        <i className="fas fa-times"></i>
-                      </button>
-                    </td>
-                  </tr>
-                ))}
+                {addCurrentCourse &&
+                  deleteCourse &&
+                  courses.map((course) => (
+                    <tr key={course._id}>
+                      <td>{course.title}</td>
+                      <td>
+                        <Link
+                          onClick={() => addCurrentCourse(course)}
+                          className="btn btn-sm btn-gray"
+                          to={`edit-course/${course._id}`}
+                        >
+                          <i className="fas fa-pen"></i>
+                        </Link>
+                        <button onClick={() => deleteCourse(course._id)} className="btn btn-sm btn-danger">
+                          <i className="fas fa-times"></i>
+                        </button>
+                      </td>
+                    </tr>
+                  ))}
               </tbody>
             </table>
           )}

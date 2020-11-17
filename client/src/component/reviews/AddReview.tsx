@@ -1,9 +1,16 @@
 import React, { useState, useContext, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useHistory, useParams } from "react-router-dom";
 import { BootcampContext } from "../../context/bootcamp/BootcampState";
 import { AlertContext } from "../../context/alert/AlertState";
+import isEmpty from "../../util/isEmpty";
+import { Review, FormEventProps } from "../../context/type";
 
-const AddReview = (props) => {
+const AddReview = () => {
+  const history = useHistory();
+  const params = useParams<{
+    reviewId: string;
+    bootcampId: string;
+  }>();
   //initialize bootcamp and alert context
   const bootcampContext = useContext(BootcampContext);
   const alertContext = useContext(AlertContext);
@@ -25,7 +32,7 @@ const AddReview = (props) => {
   } = bootcampContext;
 
   //Local state for form control
-  const [review, setReview] = useState({
+  const [review, setReview] = useState<Partial<Review>>({
     title: "",
     text: "",
     ratings: "",
@@ -34,7 +41,7 @@ const AddReview = (props) => {
   //Dynamically change the form to an edit form if a user
   //clicks the edit button or an add form if the user clicks an add review button
   useEffect(() => {
-    if (currentReview !== null) {
+    if (!isEmpty(currentReview) && currentReview) {
       setReview(currentReview);
     } else {
       setReview({
@@ -44,43 +51,44 @@ const AddReview = (props) => {
       });
     }
 
-    if (error !== null) {
-      if (error === "User Already Exist") {
+    if (error) {
+      if (error === "User Already Exist" && setAlert) {
         setAlert("You already reviewed this bootcamp", "danger");
       } else {
-        setAlert(error, "danger", 4000);
+        if (setAlert) setAlert(error, "danger", 4000);
       }
     }
 
-    if (success && currentReview !== null) {
+    if (success && !isEmpty(currentReview) && setAlert) {
       setAlert("Review updated successfully", "success");
-      props.history.goBack();
-    } else if (success && currentReview === null) {
+      history.goBack();
+    } else if (success && isEmpty(currentReview) && setAlert && getBootcamp) {
       setAlert("Review Added successfully", "success");
-      getBootcamp(bootcamp._id);
-      props.history.goBack();
+      if (bootcamp?._id) getBootcamp(bootcamp._id);
+      history.goBack();
+    }
+    if (clearError && clearSuccess) {
+      clearError();
+      clearSuccess();
     }
 
-    clearError();
-    clearSuccess();
-
     return () => {
-      clearCurrentReview();
+      if (clearCurrentReview) clearCurrentReview();
     };
 
     //eslint-disable-next-line
-  }, [error, currentReview, success, props.history]);
+  }, [error, currentReview, success, history]);
 
-  const handleChange = (e) => {
-    setReview({ ...review, [e.target.name]: e.target.value });
+  const handleChange = (e: FormEventProps) => {
+    setReview({ ...review, [e.currentTarget.name]: e.currentTarget.value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = (e: FormEventProps) => {
     e.preventDefault();
-    if (currentReview !== null) {
-      updateReview(review, props.match.params.reviewId);
-    } else {
-      addReview(review, props.match.params.bootcampId);
+    if (!isEmpty(currentReview) && updateReview && review) {
+      updateReview(review, params.reviewId);
+    } else if (addReview && review) {
+      addReview(review, params.bootcampId);
     }
   };
 
@@ -90,7 +98,7 @@ const AddReview = (props) => {
     <main id="add-review">
       <div className="review-container">
         <div className="new-review">
-          <Link to={`/bootcamps/${props.match.params.bootcampId}`}>
+          <Link to={`/bootcamps/${params.bootcampId}`}>
             <i className="fas fa-chevron-left"></i>
             Bootcamp Info
           </Link>
@@ -115,8 +123,8 @@ const AddReview = (props) => {
               name="text"
               value={text}
               onChange={handleChange}
-              cols="30"
-              rows="15"
+              cols={30}
+              rows={15}
               placeholder="Your review"
             ></textarea>
             <input type="submit" value={loading ? "Loading...." : "Submit Review"} className="btn btn-dark btn-block" />

@@ -3,6 +3,7 @@ import { useHistory } from "react-router-dom";
 import { BootcampContext } from "../../context/bootcamp/BootcampState";
 import { AlertContext } from "../../context/alert/AlertState";
 import isEmpty from "../../util/isEmpty";
+import { FormEventProps } from "../../context/type";
 
 interface Item {
   name: string;
@@ -76,10 +77,10 @@ const AddBootcamp: React.FC = () => {
 
     if (error && !isEmpty(error)) {
       if (setAlert) setAlert(error, "danger", 4000);
-    } else if (isEmpty(currentBootcamp) && success) {
+    } else if (!isEmpty(currentBootcamp) && success) {
       if (setAlert) setAlert("Bootcamp Updated Successfully", "success");
       history.push("/manage-bootcamp");
-    } else if (currentBootcamp === null && success) {
+    } else if (isEmpty(currentBootcamp) && success) {
       if (setAlert) setAlert("Bootcamp Added Successfully", "success");
       history.push("/manage-bootcamp");
     }
@@ -100,8 +101,8 @@ const AddBootcamp: React.FC = () => {
     setBootcamp({ ...bootcamp, [name]: value });
   };
 
-  const handleTextAreaChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    const target = e.target;
+  const handleTextAreaChange = (e: FormEventProps) => {
+    const target = e.currentTarget;
     const value = target.value;
     const name = target.name;
     setBootcamp({ ...bootcamp, [name]: value });
@@ -120,10 +121,10 @@ const AddBootcamp: React.FC = () => {
   };
 
   //To submit form
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = (e: FormEventProps) => {
     e.preventDefault();
 
-    if (currentBootcamp === null) {
+    if (isEmpty(currentBootcamp)) {
       if (addBootcamp) addBootcamp(bootcamp);
     } else {
       if (updateBootcamp) updateBootcamp(bootcamp, currentBootcamp._id);

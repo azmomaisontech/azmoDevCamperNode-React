@@ -1,7 +1,11 @@
 import React from "react";
-import PropTypes from "prop-types";
+import { Course as CourseProps } from "../../context/type";
 
-const Course = ({ course }) => {
+interface Props {
+  course: Partial<CourseProps>;
+}
+
+const Course: React.FC<Props> = ({ course }) => {
   return (
     <div className="course">
       <div className="course-heading">
@@ -17,11 +21,7 @@ const Course = ({ course }) => {
             <li>
               Scholarship Available:{" "}
               <span>
-                {course.scholarhipsAvailable ? (
-                  <i className="fas fa-check"></i>
-                ) : (
-                  <i className="fas fa-times"></i>
-                )}
+                {course.scholarshipAvailable ? <i className="fas fa-check"></i> : <i className="fas fa-times"></i>}
               </span>
             </li>
           </ul>
@@ -31,7 +31,4 @@ const Course = ({ course }) => {
   );
 };
 
-Course.propTypes = {
-  course: PropTypes.object.isRequired
-};
 export default Course;

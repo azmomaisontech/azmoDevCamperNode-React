@@ -12,8 +12,10 @@ const DesktopNavBar = withRouter((props) => {
 
   //Logout
   const handleLogout = () => {
-    logoutUser();
-    clearBootcamps();
+    if (logoutUser && clearBootcamps) {
+      logoutUser();
+      clearBootcamps();
+    }
     props.history.push("/");
   };
 
@@ -29,7 +31,7 @@ const DesktopNavBar = withRouter((props) => {
         </div>
         <div className="accounts">
           <ul>
-            {isAuthenticated === null && (
+            {!isAuthenticated && (
               <Fragment>
                 <li>
                   <Link to="/login">
@@ -43,7 +45,7 @@ const DesktopNavBar = withRouter((props) => {
                 </li>
               </Fragment>
             )}
-            {isAuthenticated !== null && (
+            {isAuthenticated && getBootcamps && (
               <li className="dropdown-menu">
                 <span className="account-icon">
                   <i className="fas fa-user"></i> Account
@@ -73,9 +75,11 @@ const DesktopNavBar = withRouter((props) => {
             )}
             <div className="divide-line"></div>
             <li>
-              <Link onClick={() => getBootcamps()} to="/bootcamps">
-                Browse All Bootcamps
-              </Link>
+              {getBootcamps && (
+                <Link onClick={() => getBootcamps()} to="/bootcamps">
+                  Browse All Bootcamps
+                </Link>
+              )}
             </li>
           </ul>
         </div>

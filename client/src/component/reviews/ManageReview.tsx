@@ -26,29 +26,29 @@ const ManageReview = () => {
   const { user } = authContext;
 
   useEffect(() => {
-    getReviews();
+    if (getReviews) getReviews();
 
     return () => {
-      clearReviews();
+      if (clearReviews) clearReviews();
     };
 
     //eslint-disable-next-line
   }, []);
 
   useEffect(() => {
-    if (error !== null) {
+    if (error && setAlert) {
       setAlert(error, "danger");
     }
 
-    clearError();
+    if (clearError) clearError();
 
     //eslint-disable-next-line
   }, [error]);
 
   //To get the review that belongs to a particular logged in user
-  const userReview = reviews.filter((review) => review.user === user._id);
+  const userReview = reviews?.filter((review) => review.user === user?._id);
 
-  if (userReview.length === 0 && !loading)
+  if (userReview?.length === 0 && !loading)
     return (
       <main id="manage-review">
         <div className="review-container">
@@ -75,22 +75,26 @@ const ManageReview = () => {
                 </tr>
               </thead>
               <tbody>
-                {userReview !== null &&
+                {userReview.length > 0 &&
                   userReview.map((review) => (
                     <tr key={review._id}>
                       <td>{review.bootcamp.name} </td>
                       <td>{review.ratings}</td>
                       <td>
-                        <Link
-                          className="btn btn-sm btn-gray"
-                          onClick={() => addCurrentReview(review)}
-                          to={`/bootcamps/${review.bootcamp._id}/edit-review/${review._id}`}
-                        >
-                          <i className="fas fa-pen"></i>
-                        </Link>
-                        <button onClick={() => deleteReviews(review._id)} className="btn btn-sm btn-danger">
-                          <i className="fas fa-times"></i>
-                        </button>
+                        {addCurrentReview && (
+                          <Link
+                            className="btn btn-sm btn-gray"
+                            onClick={() => addCurrentReview(review)}
+                            to={`/bootcamps/${review.bootcamp._id}/edit-review/${review._id}`}
+                          >
+                            <i className="fas fa-pen"></i>
+                          </Link>
+                        )}
+                        {deleteReviews && (
+                          <button onClick={() => deleteReviews(review._id)} className="btn btn-sm btn-danger">
+                            <i className="fas fa-times"></i>
+                          </button>
+                        )}
                       </td>
                     </tr>
                   ))}

@@ -1,3 +1,5 @@
+import React from "react";
+
 export enum StateEnum {
   SET_ALERT = "SET_ALERT",
   CLEAR_ALERT = "CLEAR_ALERT",
@@ -82,7 +84,7 @@ export interface Course {
   title: string;
   description: string;
   weeks: string;
-  tuition: number;
+  tuition: string;
   minimumSkill: string;
   bootcamp: Bootcamp;
   user: User;
@@ -92,8 +94,18 @@ export interface Course {
 export interface Review {
   _id: string;
   title: string;
-  text: "string";
-  ratings: number;
+  text: string;
+  ratings: string;
+  bootcamp: Bootcamp;
+  user: string;
+  createdAt: string;
+}
+
+export interface ReviewWithUser {
+  _id: string;
+  title: string;
+  text: string;
+  ratings: string;
   bootcamp: Bootcamp;
   user: User;
   createdAt: string;
@@ -106,7 +118,7 @@ export type BootcampState = {
   courses: Course[];
   currentCourse: Partial<Course>;
   reviews: Review[];
-  bootcampReviews: Review[];
+  bootcampReviews: Partial<ReviewWithUser[]>;
   currentReview: Partial<Review>;
   image: string;
   filtered: Partial<Bootcamp>[];
@@ -130,7 +142,7 @@ export interface BContextProps extends BootcampState {
   addBootcamp: (formData: Partial<Bootcamp>) => void;
   updateBootcamp: (formData: Partial<Bootcamp>, bootcampId: string) => void;
   deleteBootcamp: (bootcampId: string) => void;
-  filterBootcamp: (zipcode: any, searchRad: any) => void;
+  filterBootcamp: (zipcode: string, searchRad: string) => void;
   selectBootcamp: (averageRating: number, averageCost: number) => void;
   uploadImage: (file: any, bootcampId: string) => void;
   clearFiltered: () => void;
@@ -192,3 +204,9 @@ export interface AuthContextProps extends AuthStateProps {
 export interface Props {
   children: JSX.Element[] | JSX.Element;
 }
+
+export type FormEventProps =
+  | React.FormEvent<HTMLFormElement>
+  | React.ChangeEvent<HTMLInputElement>
+  | React.ChangeEvent<HTMLSelectElement>
+  | React.ChangeEvent<HTMLTextAreaElement>;

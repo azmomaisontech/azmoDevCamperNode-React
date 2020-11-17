@@ -20,7 +20,7 @@ const Home: React.FC = () => {
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    filterBootcamp(zipcode, miles);
+    if (filterBootcamp) filterBootcamp(zipcode, miles);
     history.push("/bootcamps");
   };
   const { miles, zipcode } = distance;
@@ -49,9 +49,11 @@ const Home: React.FC = () => {
           />
           <input className="btn btn-block btn-primary" type="submit" value="Filter Bootcamps" />
         </form>
-        <Link className="btn btn-block standalone" onClick={() => getBootcamps()} to="/bootcamps">
-          Browse All Bootcamps
-        </Link>
+        {getBootcamps && (
+          <Link className="btn btn-block standalone" onClick={() => getBootcamps()} to="/bootcamps">
+            Browse All Bootcamps
+          </Link>
+        )}
       </div>
     </main>
   );

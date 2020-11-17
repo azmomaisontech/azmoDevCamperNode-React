@@ -12,13 +12,15 @@ const MobileNavBar = withRouter((props) => {
 
   //Logout
   const handleLogout = () => {
-    logoutUser();
-    clearBootcamps();
+    if (logoutUser && clearBootcamps) {
+      logoutUser();
+      clearBootcamps();
+    }
     props.history.push("/");
   };
 
   const handleHamburger = () => {
-    let x = document.getElementById("myLinks");
+    let x: HTMLElement = document.getElementById("myLinks")!;
     if (x.style.display === "block") {
       x.style.display = "none";
     } else {
@@ -59,9 +61,11 @@ const MobileNavBar = withRouter((props) => {
               <div className="nav-list">
                 <ul>
                   <li>
-                    <Link onClick={() => getBootcamps(1, 1000)} to="/manage-bootcamp">
-                      Manage Bootcamp
-                    </Link>
+                    {getBootcamps && (
+                      <Link onClick={() => getBootcamps(1, 1000)} to="/manage-bootcamp">
+                        Manage Bootcamp
+                      </Link>
+                    )}
                   </li>
                   <li>
                     <Link to="/manage-review">Manage Review</Link>
@@ -80,9 +84,11 @@ const MobileNavBar = withRouter((props) => {
             </li>
           )}
           <li>
-            <Link onClick={() => getBootcamps()} to="/bootcamps">
-              Browse All Bootcamps
-            </Link>
+            {getBootcamps && (
+              <Link onClick={() => getBootcamps()} to="/bootcamps">
+                Browse All Bootcamps
+              </Link>
+            )}
           </li>
         </ul>
       </div>

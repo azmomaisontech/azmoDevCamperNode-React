@@ -1,10 +1,14 @@
 import React from "react";
-import PropTypes from "prop-types";
+import { Review as ReviewProp, User } from "../../context/type";
 
-const Review = ({ review }) => {
-  const { title, ratings, text, user } = review;
+interface Props {
+  review: { _id: string; title: string; ratings: string; text: string; user: Partial<User> };
+}
+
+const Review: React.FC<Props> = ({ review }) => {
+  const { _id, title, ratings, text, user } = review;
   return (
-    <div className="review" key={review._id}>
+    <div className="review" key={_id}>
       <div className="review-heading">
         <h2 className="s-heading">{title}</h2>
       </div>
@@ -17,10 +21,6 @@ const Review = ({ review }) => {
       </div>
     </div>
   );
-};
-
-Review.propTypes = {
-  review: PropTypes.object.isRequired
 };
 
 export default Review;
