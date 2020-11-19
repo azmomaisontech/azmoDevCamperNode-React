@@ -190,13 +190,37 @@ export type AuthStateProps = {
   success: false;
 };
 
+export interface LoginProps {
+  email: string;
+  password: string;
+}
+
+export interface UpdateUserProps {
+  name: string;
+  email: string;
+}
+
+export interface RegisterUserProps {
+  name: string;
+  email: string;
+  password: string;
+  password2: string;
+  role: string;
+}
+
+export interface UpdatePasswordProps {
+  currentPassword: string;
+  newPassword: string;
+  confirmPassword: string;
+}
+
 export interface AuthContextProps extends AuthStateProps {
   loadUser: () => void;
-  registerUser: (formData: any) => void;
-  loginUser: (formData: any) => void;
+  registerUser: (formData: RegisterUserProps) => void;
+  loginUser: (formData: LoginProps) => void;
   logoutUser: () => void;
-  updateUser: (formData: any) => void;
-  updatePassword: (formData: any) => void;
+  updateUser: (formData: UpdateUserProps) => void;
+  updatePassword: (formData: UpdatePasswordProps) => void;
   clearError: () => void;
   clearSuccess: () => void;
 }

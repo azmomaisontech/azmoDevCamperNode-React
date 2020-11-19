@@ -1,7 +1,15 @@
 import React, { useReducer, createContext } from "react";
 import AuthReducer from "./authReducer";
 import setAuthToken from "../../util/setAuthToken";
-import { StateEnum, AuthContextProps, Props } from "../type";
+import {
+  StateEnum,
+  AuthContextProps,
+  Props,
+  RegisterUserProps,
+  LoginProps,
+  UpdateUserProps,
+  UpdatePasswordProps,
+} from "../type";
 import axios from "axios";
 
 const AuthContext = createContext<Partial<AuthContextProps>>({});
@@ -39,7 +47,7 @@ const AuthState: React.FC<Props> = ({ children }) => {
   };
 
   //   Register new user
-  const registerUser = async (formData: any) => {
+  const registerUser = async (formData: RegisterUserProps) => {
     setLoading();
     const config = {
       headers: {
@@ -63,7 +71,7 @@ const AuthState: React.FC<Props> = ({ children }) => {
   };
 
   //LoginUser
-  const loginUser = async (formData: any) => {
+  const loginUser = async (formData: LoginProps) => {
     setLoading();
     const config = {
       headers: {
@@ -87,7 +95,7 @@ const AuthState: React.FC<Props> = ({ children }) => {
   };
 
   //Update user Name / Email
-  const updateUser = async (formData: any) => {
+  const updateUser = async (formData: UpdateUserProps) => {
     setLoading();
     const config = {
       headers: {
@@ -110,7 +118,7 @@ const AuthState: React.FC<Props> = ({ children }) => {
   };
 
   //Update user password
-  const updatePassword = async (formData: any) => {
+  const updatePassword = async (formData: UpdatePasswordProps) => {
     setLoading();
     const config = {
       headers: {

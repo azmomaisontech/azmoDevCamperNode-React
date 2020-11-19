@@ -1,5 +1,5 @@
 import React from "react";
-import { Review as ReviewProp, User } from "../../context/type";
+import { User } from "../../context/type";
 
 interface Props {
   review: { _id: string; title: string; ratings: string; text: string; user: Partial<User> };

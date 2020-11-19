@@ -1,6 +1,6 @@
 import { StateEnum } from "../type";
 
-export default (state, action) => {
+export default (state: any, action: any) => {
   switch (action.type) {
     case StateEnum.REGISTER_USER:
     case StateEnum.LOGIN_USER:

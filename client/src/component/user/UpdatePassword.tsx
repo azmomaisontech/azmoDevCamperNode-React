@@ -1,8 +1,9 @@
 import React, { useState, useContext, useEffect } from "react";
 import { AuthContext } from "../../context/auth/AuthState";
 import { AlertContext } from "../../context/alert/AlertState";
+import { FormEventProps } from "../../context/type";
 
-const UpdatePassword = (props) => {
+const UpdatePassword = () => {
   const [user, setUser] = useState({
     currentPassword: "",
     newPassword: "",
@@ -17,30 +18,32 @@ const UpdatePassword = (props) => {
   const { updatePassword, error, clearError, success, clearSuccess } = authContext;
   const { setAlert } = alertContext;
 
-  const handleChange = (e) => {
-    setUser({ ...user, [e.target.name]: e.target.value });
+  const handleChange = (e: FormEventProps) => {
+    setUser({ ...user, [e.currentTarget.name]: e.currentTarget.value });
   };
 
   useEffect(
     () => {
-      if (error === "Password is incorrect") {
+      if (error === "Password is incorrect" && setAlert) {
         setAlert("Password is incorrect", "danger");
-      } else if (success) {
+      } else if (success && setAlert) {
         setAlert("Password changed successfully", "success");
       }
 
-      clearError();
-      clearSuccess();
+      if (clearError && clearSuccess) {
+        clearError();
+        clearSuccess();
+      }
     },
     //eslint-disable-next-line
     [error, success]
   );
 
-  const handleSubmit = (e) => {
+  const handleSubmit = (e: FormEventProps) => {
     e.preventDefault();
 
-    if (newPassword !== confirmPassword) return setAlert("Password does not match", "danger");
-    updatePassword(user);
+    if (newPassword !== confirmPassword && setAlert) return setAlert("Password does not match", "danger");
+    if (updatePassword) updatePassword(user);
   };
 
   return (

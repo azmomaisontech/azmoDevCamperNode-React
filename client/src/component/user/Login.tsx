@@ -1,9 +1,12 @@
 import React, { useEffect, useContext, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation, useHistory } from "react-router-dom";
 import { AuthContext } from "../../context/auth/AuthState";
 import { AlertContext } from "../../context/alert/AlertState";
+import { FormEventProps } from "../../context/type";
 
-const Login = (props) => {
+const Login = () => {
+  const location = useLocation<any>();
+  const history = useHistory();
   //Initialize state items with context
   const authContext = useContext(AuthContext);
   const alertContext = useContext(AlertContext);
@@ -21,28 +24,28 @@ const Login = (props) => {
   const { email, password } = user;
 
   //where to take the user after signing in
-  const { from } = props.location.state || { from: { pathname: "/" } };
+  const { from } = location.state || { from: { pathname: "/" } };
 
   useEffect(() => {
     if (isAuthenticated) {
-      props.history.push(from);
+      history.push(from);
     }
 
-    if (error === "Invalid credentials") {
+    if (error === "Invalid credentials" && setAlert && clearError) {
       setAlert("Username or Password Incorrect", "danger", 3000);
       clearError();
     }
 
     //eslint-disable-next-line
-  }, [error, isAuthenticated, props.history]);
+  }, [error, isAuthenticated, history]);
 
-  const handleChange = (e) => {
-    setUser({ ...user, [e.target.name]: e.target.value });
+  const handleChange = (e: FormEventProps) => {
+    setUser({ ...user, [e.currentTarget.name]: e.currentTarget.value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = (e: FormEventProps) => {
     e.preventDefault();
-    loginUser(user);
+    if (loginUser) loginUser(user);
   };
 
   return (

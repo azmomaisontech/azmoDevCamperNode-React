@@ -52,7 +52,7 @@ app.use(xss());
 //Limit the number of request per time
 const limiter = rateLimit({
   windowMs: 10 * 60 * 1000, // 10 minutes
-  max: 100 // limit each IP to 1000 requests per windowMs
+  max: 100, // limit each IP to 1000 requests per windowMs
 });
 
 //  apply to all requests
@@ -86,7 +86,7 @@ if (process.env.NODE_ENV === "production") {
 app.use(errorHandler);
 
 //declare env var
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 6000;
 const MODE = process.env.NODE_ENV;
 
 //load server

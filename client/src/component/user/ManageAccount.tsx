@@ -2,6 +2,7 @@ import React, { useState, useContext, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { AuthContext } from "../../context/auth/AuthState";
 import { AlertContext } from "../../context/alert/AlertState";
+import { FormEventProps } from "../../context/type";
 
 const ManageAccount = () => {
   //Initialize Context
@@ -19,24 +20,26 @@ const ManageAccount = () => {
   });
 
   useEffect(() => {
-    if (error !== null) {
+    if (error && setAlert) {
       setAlert(error, "danger");
-    } else if (success) {
+    } else if (success && setAlert) {
       setAlert("User info changed successfully", "success");
     }
 
-    clearError();
-    clearSuccess();
+    if (clearError && clearSuccess) {
+      clearError();
+      clearSuccess();
+    }
 
     //eslint-disable-next-line
   }, [success, error]);
 
-  const handleChange = (e) => {
-    setUser({ ...userInfo, [e.target.name]: e.target.value });
+  const handleChange = (e: FormEventProps) => {
+    setUser({ ...userInfo, [e.currentTarget.name]: e.currentTarget.value });
   };
-  const handleSubmit = (e) => {
+  const handleSubmit = (e: FormEventProps) => {
     e.preventDefault();
-    updateUser(userInfo);
+    if (updateUser) updateUser(userInfo);
   };
 
   const { name, email } = userInfo;

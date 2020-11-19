@@ -1,9 +1,12 @@
 import React, { useState, useEffect, useContext } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation, useHistory } from "react-router-dom";
 import { AuthContext } from "../../context/auth/AuthState";
 import { AlertContext } from "../../context/alert/AlertState";
+import { FormEventProps } from "../../context/type";
 
-const Register = (props) => {
+const Register = () => {
+  const location = useLocation<any>();
+  const history = useHistory();
   const [user, setUser] = useState({
     name: "",
     email: "",
@@ -12,7 +15,7 @@ const Register = (props) => {
     role: "user",
   });
 
-  const { name, email, password, password2, role } = user;
+  const { name, email, password, password2 } = user;
 
   const authContext = useContext(AuthContext);
   const alertContext = useContext(AlertContext);
@@ -21,33 +24,33 @@ const Register = (props) => {
   const { setAlert } = alertContext;
 
   //where to take the user after signing in
-  const { from } = props.location.state || { from: { pathname: "/" } };
+  const { from } = location.state || { from: { pathname: "/" } };
 
   useEffect(
     () => {
       if (isAuthenticated) {
-        props.history.push(from);
+        history.push(from);
       }
-      if (error === "User Already Exist") {
+      if (error === "User Already Exist" && setAlert && clearError) {
         setAlert("User already exist", "danger", 3000);
         clearError();
       }
     },
     //eslint-disable-next-line
-    [error, isAuthenticated, props.history]
+    [error, isAuthenticated, history]
   );
 
-  const handleChange = (e) => {
+  const handleChange = (e: FormEventProps) => {
     setUser({
       ...user,
-      [e.target.name]: e.target.value,
+      [e.currentTarget.name]: e.currentTarget.value,
     });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = (e: FormEventProps) => {
     e.preventDefault();
-    if (password !== password2) return setAlert("Passwords does not match", "danger");
-    registerUser(user);
+    if (password !== password2 && setAlert) return setAlert("Passwords does not match", "danger");
+    if (registerUser) registerUser(user);
   };
 
   return (
@@ -82,7 +85,7 @@ const Register = (props) => {
               onChange={handleChange}
               placeholder="Enter Password"
               required
-              minLength="6"
+              minLength={6}
             />
           </div>
           <div className="form-group">
@@ -94,7 +97,7 @@ const Register = (props) => {
               onChange={handleChange}
               placeholder="Confirm Password"
               required
-              minLength="6"
+              minLength={6}
             />
             <p
               style={
@@ -109,7 +112,7 @@ const Register = (props) => {
           <div className="form-group role">
             <h2 className="s-heading">User Role</h2>
             <div>
-              <input type="radio" name="role" value="user" checked={role.user} onChange={handleChange} required />
+              <input type="radio" name="role" value="user" /* checked={role.user} */ onChange={handleChange} required />
               <span> Regular User (Browse, Write reviews, etc) </span>
             </div>
 
@@ -118,7 +121,7 @@ const Register = (props) => {
                 type="radio"
                 name="role"
                 value="publisher"
-                checked={role.publisher}
+                /* checked={role.publisher} */
                 onChange={handleChange}
                 required
               />

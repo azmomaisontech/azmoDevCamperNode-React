@@ -251,7 +251,7 @@ const BootcampState: React.FC<Props> = ({ children }) => {
   // Courses
 
   //Add a new course associated with a bootcamp
-  const addCourse = async (formData: Partial<Bootcamp>, bootcampId: string) => {
+  const addCourse = async (formData: Partial<Course>, bootcampId: string) => {
     setLoading();
     const config = {
       headers: {
