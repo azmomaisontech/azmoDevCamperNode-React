@@ -192,6 +192,22 @@ p {
   background: #cc0000;
 }
 
+.text-green {
+  color: #007300;
+}
+
+.margin-right {
+  margin-right: 1rem;
+}
+
+select {
+  padding: 5px;
+}
+
+.text-logo {
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+
 .divide-line {
   height: 1px;
   width: 38px;
@@ -375,6 +391,7 @@ i.fa-times {
 
 #navbar .dropdown-menu:hover .nav-list {
   display: block;
+  margin-right: 0.5rem;
 }
 
 #navbar .dropdown-menu .nav-list ul {
@@ -441,7 +458,7 @@ i.fa-times {
 #login-main form {
   display: grid;
   grid-gap: 1.1rem;
-  margin-top: 3rem;
+  margin: 3rem 0;
   padding: 3rem;
   border: 1px solid #e0e0e0;
   background-color: #fff;
@@ -537,10 +554,6 @@ i.fa-times {
   grid-gap: 1rem;
 }
 
-#bootcamp-main .form-group {
-  margin: 1rem 0;
-}
-
 #bootcamp-main input[type="text"] {
   padding: 0.6rem;
 }
@@ -552,6 +565,7 @@ i.fa-times {
 #bootcamp-main select {
   display: block;
   margin-top: 0.7rem;
+  margin-bottom: 1rem;
   width: 100%;
   height: 40px;
   font-size: 1rem;

@@ -128,9 +128,6 @@ const Register = () => {
               <span> Bootcamp Publisher</span>
             </div>
           </div>
-          <p className="text-primary">
-            * You must be affiliated with the bootcamp in some way in order to add it to DevCamper.
-          </p>
           <input
             type="submit"
             className="btn btn-primary btn-block"

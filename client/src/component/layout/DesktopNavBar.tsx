@@ -25,7 +25,7 @@ const DesktopNavBar = withRouter((props) => {
         <div className="logo">
           <h1>
             <Link to="/">
-              <i className="fas fa-laptop-code"></i> Azmo DevCamper
+              <i className="fas fa-laptop-code"></i> Azmo Market<span className="text-logo">P</span>lace
             </Link>
           </h1>
         </div>
@@ -53,9 +53,7 @@ const DesktopNavBar = withRouter((props) => {
                 <div className="nav-list">
                   <ul>
                     <li>
-                      <Link onClick={() => getBootcamps(1, 1000)} to="/manage-bootcamp">
-                        Manage Bootcamp
-                      </Link>
+                      <Link to="/manage-bootcamp">Manage Bootcamp</Link>
                     </li>
                     <li>
                       <Link to="/manage-review">Manage Review</Link>
@@ -75,11 +73,7 @@ const DesktopNavBar = withRouter((props) => {
             )}
             <div className="divide-line"></div>
             <li>
-              {getBootcamps && (
-                <Link onClick={() => getBootcamps()} to="/bootcamps">
-                  Browse All Bootcamps
-                </Link>
-              )}
+              <Link to="/bootcamps">Browse All Bootcamps</Link>
             </li>
           </ul>
         </div>

@@ -33,7 +33,7 @@ const MobileNavBar = withRouter((props) => {
       <div className="logo">
         <h1>
           <Link to="/">
-            <i className="fas fa-laptop-code"></i> Azmo DevCamper
+            <i className="fas fa-laptop-code"></i> Azmo Market<span className="text-logo">P</span>lace
           </Link>
         </h1>
       </div>

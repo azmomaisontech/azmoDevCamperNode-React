@@ -1,21 +1,22 @@
 import React, { useContext, useState } from "react";
 import { Link, useHistory } from "react-router-dom";
 import { BootcampContext } from "../../context/bootcamp/BootcampState";
+import { FormEventProps } from "../../context/type";
 
 const Home: React.FC = () => {
+  const history = useHistory();
+
   const [distance, setDistance] = useState({
     miles: "",
     zipcode: "",
   });
 
-  const history = useHistory();
-
   const bootcampContext = useContext(BootcampContext);
 
-  const { filterBootcamp, getBootcamps } = bootcampContext;
+  const { filterBootcamp } = bootcampContext;
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setDistance({ ...distance, [e.target.name]: e.target.value });
+  const handleChange = (e: FormEventProps) => {
+    setDistance({ ...distance, [e.currentTarget.name]: e.currentTarget.value });
   };
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
@@ -49,11 +50,9 @@ const Home: React.FC = () => {
           />
           <input className="btn btn-block btn-primary" type="submit" value="Filter Bootcamps" />
         </form>
-        {getBootcamps && (
-          <Link className="btn btn-block standalone" onClick={() => getBootcamps()} to="/bootcamps">
-            Browse All Bootcamps
-          </Link>
-        )}
+        <Link className="btn btn-block standalone" to="/bootcamps">
+          Browse All Bootcamps
+        </Link>
       </div>
     </main>
   );

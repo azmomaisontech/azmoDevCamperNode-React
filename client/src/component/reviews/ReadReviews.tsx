@@ -38,7 +38,7 @@ const ReadReviews = () => {
         <div className="review-grid">
           <div className="review-content">
             <Link className="btn btn-gray btn-sm " to={`/bootcamps/${bootcamp?._id}`}>
-              <i className="fas fa-chevron-left"></i>
+              <i className="fas fa-chevron-left margin-right"></i>
               Bootcamp Info
             </Link>
             <h2 className="m-heading">{bootcamp?.name}</h2>

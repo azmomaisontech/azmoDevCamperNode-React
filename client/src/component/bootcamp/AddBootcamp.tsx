@@ -136,7 +136,7 @@ const AddBootcamp: React.FC = () => {
       <div className="container">
         <div className="bootcamp">
           <h2 className="m-heading">Add Bootcamp</h2>
-          <p>Important: You must be affiliated with a bootcamp to add to DevCamper</p>
+          <p>Important: You must be affiliated with a bootcamp to add to Azmo Marketplace</p>
           <form onSubmit={handleSubmit}>
             <div className="form-grid">
               <div className="location">
